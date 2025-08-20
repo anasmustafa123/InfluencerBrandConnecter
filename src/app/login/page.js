@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/navigation";
+
 
 // ✅ Define Yup schema
 const schema = Yup.object().shape({
@@ -17,6 +19,8 @@ password: Yup.string()
 });
 
 export default function LoginForm() {
+    const router = useRouter();
+
   // ✅ Connect form to Yup schema
 const {
     register,
@@ -28,7 +32,9 @@ const {
 
 const onSubmit = (data) => {
     console.log("Logging in with:", data);
+    console.log("Login successful:", data);
     alert(`Login attempt sent!\nEmail: ${data.email}`);
+    router.push("/profile");
 };
 
 return (
