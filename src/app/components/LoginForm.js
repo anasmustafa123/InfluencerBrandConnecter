@@ -1,44 +1,71 @@
-"use client"; // needed if using form handlers or hooks in app dir
+"use client";
 
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+// ✅ Define Yup schema
+const schema = Yup.object().shape({
+email: Yup.string()
+    .email("Invalid email format")
+    .matches(/\.com$/, "Email must end with .com")
+    .required("Email is required"),
+password: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+});
+
 
 export default function LoginForm() {
-const [email, setEmail] = useState("");
-const [password, setPassword] = useState("");
+  // ✅ Connect form to Yup schema
+const {
+    register,
+    handleSubmit,
+    formState: { errors },
+} = useForm({
+    resolver: yupResolver(schema),
+});
 
-const handleSubmit = (e) => {
-    e.preventDefault();
-    // Simulated backend call
-    console.log("Logging in with:", { email, password });
-    alert("Login attempt sent!");
+const onSubmit = (data) => {
+    console.log("Logging in with:", data);
+    alert(`Login attempt sent!\nEmail: ${data.email}`);
 };
 
 return (
     <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-2xl shadow-md">
     <h2 className="text-2xl font-bold text-center text-gray-800">Login</h2>
-    <form className="space-y-4" onSubmit={handleSubmit}>
+
+    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         {/* Email */}
         <div>
-        <label className="block text-sm font-medium text-gray-700">Email</label>
+        <label className="block text-sm font-medium text-gray-700">
+            Email
+        </label>
         <input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+            {...register("email")}
             className="w-full px-3 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+        {errors.email && (
+            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+        )}
         </div>
 
         {/* Password */}
         <div>
-        <label className="block text-sm font-medium text-gray-700">Password</label>
+        <label className="block text-sm font-medium text-gray-700">
+            Password
+        </label>
         <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
+            {...register("password")}
             className="w-full px-3 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+        {errors.password && (
+            <p className="text-red-500 text-sm mt-1">
+            {errors.password.message}
+            </p>
+        )}
         </div>
 
         {/* Submit */}
@@ -53,7 +80,7 @@ return (
     <p className="text-sm text-center text-gray-500">
         Don’t have an account?{" "}
         <a href="/signup" className="text-blue-600 hover:underline">
-    Sign up
+        Sign up
         </a>
     </p>
     </div>
