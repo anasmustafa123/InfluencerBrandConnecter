@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -77,12 +78,12 @@ return (
         </button>
     </form>
 
-    <p className="text-sm text-center text-gray-500">
-        Don’t have an account?{" "}
-        <a href="/signup" className="text-blue-600 hover:underline">
-        Sign up
-        </a>
-    </p>
+    <p className="text-sm text-gray-600">
+    Don’t have an account?{" "}
+    <Link href="/signup" className="text-blue-500 hover:underline">
+    Sign Up
+    </Link>
+</p>
     </div>
 );
 }
