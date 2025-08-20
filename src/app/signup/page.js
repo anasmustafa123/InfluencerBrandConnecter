@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { createUser } from "@/lib/user";
 
 const schema = Yup.object().shape({
 name: Yup.string().required("Name is required"),
@@ -35,10 +36,14 @@ const onSubmit = async (data) => {
     console.log("Sign Up Data:", data);
 
     // TODO: call your API here (fake success for now)
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate request
-
-    // ✅ Redirect to login page after successful signup
-    router.push("/login");
+    // await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate request
+    try {
+        await createUser(data.name, data.email, data.password);     
+        router.push("/login");
+    } catch (error) {
+        alert(error.message)
+        // console.error("Error creating user:", error);
+    }
 };
 
 return (
