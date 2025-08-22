@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -23,6 +24,8 @@ confirmPassword: Yup.string()
 
 export default function SignUpForm() {
   const router = useRouter(); // ✅ Next.js router
+  const searchParams = useSearchParams();
+  const role = searchParams.get("role"); 
 
 const {
     register,
@@ -33,12 +36,18 @@ const {
 });
 
 const onSubmit = async (data) => {
-    console.log("Sign Up Data:", data);
+    console.log("Sign Up Data:", data, role);
 
     // TODO: call your API here (fake success for now)
     // await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate request
     try {
-        await createUser(data.name, data.email, data.password);     
+        await createUser(data.name, data.email, data.password, role);  
+        localStorage.setItem("user", JSON.stringify({ 
+        id: newUser.id, 
+        email: newUser.email, 
+        role, 
+        hasProfile: false 
+}));   
         router.push("/login");
     } catch (error) {
         alert(error.message)
@@ -49,7 +58,11 @@ const onSubmit = async (data) => {
 return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
     <div className="bg-white p-8 rounded-2xl shadow-lg w-96">
-        <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">
+        {role === "brand"
+            ? "Sign Up as Brand"
+            : "Sign Up as Influencer"}
+        </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
             <input
@@ -89,11 +102,15 @@ return (
             {errors.confirmPassword?.message}
             </p>
         </div>
+         {/* hidden input just in case you want role in the form */}
+        <input type="hidden" value={role} {...register("role")} />
         <button
             type="submit"
             className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
         >
-            Sign Up
+            {role === "brand"
+            ? "Create Brand Account"
+            : "Create Influencer Account"}
         </button>
         </form>
         <p className="mt-4 text-center text-sm">
