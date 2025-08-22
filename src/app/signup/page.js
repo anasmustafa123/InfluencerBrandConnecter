@@ -41,17 +41,10 @@ const onSubmit = async (data) => {
     // TODO: call your API here (fake success for now)
     // await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate request
     try {
-        await createUser(data.name, data.email, data.password, role);  
-        localStorage.setItem("user", JSON.stringify({ 
-        id: newUser.id, 
-        email: newUser.email, 
-        role, 
-        hasProfile: false 
-}));   
+        await createUser(data.name, data.email, data.password, role);   
         router.push("/login");
     } catch (error) {
         alert(error.message)
-        // console.error("Error creating user:", error);
     }
 };
 
