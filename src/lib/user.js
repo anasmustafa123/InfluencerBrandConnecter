@@ -1,9 +1,9 @@
 import { supabase } from "@/lib/supabase_client";
 
-export async function createUser(name, email, password) {
+export async function createUser(name, email, password, user_type) {
     const { data, error } = await supabase
         .from("users")
-        .insert([{ name, email, password }])
+        .insert([{ name, email, password, user_type }])
         .select();
 
     if (error) throw error;
