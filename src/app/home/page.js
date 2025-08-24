@@ -32,6 +32,27 @@ return (
         Grow your influence or launch your next campaign. Safe, easy, and
         effective collaborations in one platform.
         </p>
+                {/* New Buttons */}
+                <div className="flex gap-4 mt-6">
+                    <Link
+                        href="/influencerfilter"
+                        className="px-6 py-3 rounded-full bg-indigo-600 text-white font-semibold shadow-md hover:bg-indigo-700 transition"
+                    >
+                        Find Influencers
+                    </Link>
+                    <Link
+                        href="/marketingfilter"
+                        className="px-6 py-3 rounded-full bg-pink-600 text-white font-semibold shadow-md hover:bg-pink-700 transition"
+                    >
+                        Marketing Packages
+                    </Link>
+                    <Link
+                        href="/brandlist"
+                        className="px-6 py-3 rounded-full bg-green-600 text-white font-semibold shadow-md hover:bg-green-700 transition"
+                    >
+                        Find Brands
+                    </Link>
+                </div>
     </main>
     </div>
 );
