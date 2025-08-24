@@ -42,7 +42,7 @@ const onSubmit = async (data) => {
     // await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate request
     try {
         await createUser(data.name, data.email, data.password, role);   
-        router.push("/login");
+        router.push("/setup");
     } catch (error) {
         alert(error.message)
     }

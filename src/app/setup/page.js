@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 
+import { useRouter } from "next/navigation";
+
 export default function ProfileSetup() {
   const [step, setStep] = useState(1);
+  const router = useRouter();
 
   return (
     <div className="flex h-screen">
@@ -27,7 +30,14 @@ export default function ProfileSetup() {
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 bg-white p-8">
+      <main className="flex-1 bg-white p-8 relative">
+        {/* Skip button */}
+        <button
+          onClick={() => router.push("/profile")}
+          className="absolute top-4 right-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 shadow"
+        >
+          Skip
+        </button>
         {step === 1 && (
           <div>
             <h3 className="text-2xl font-semibold mb-4">User Information</h3>

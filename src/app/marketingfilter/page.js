@@ -21,6 +21,11 @@ export default function MarketingFilterPage() {
     setCurrent((prev) => (prev === packages.length - 1 ? 0 : prev + 1));
   };
 
+  const campaignTiers = [
+    { tier: "Bronze", price: "$500", features: ["1 campaign", "Basic analytics", "Standard support"] },
+    { tier: "Silver", price: "$1200", features: ["3 campaigns", "Advanced analytics", "Priority support"] },
+    { tier: "Gold", price: "$2500", features: ["Unlimited campaigns", "Full analytics suite", "Dedicated manager"] },
+  ];
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col px-6 py-8">
       {/* Search + Filter */}
@@ -90,6 +95,25 @@ export default function MarketingFilterPage() {
             >
               <h3 className="font-semibold">{pkg.name}</h3>
               <p className="text-sm">{pkg.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Campaign Packages Section */}
+      <section className="mt-12">
+        <h2 className="text-xl font-semibold text-pink-700 mb-4">Campaign Packages</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {campaignTiers.map((tier) => (
+            <div key={tier.tier} className="bg-pink-50 rounded-xl shadow p-6 flex flex-col items-start border border-pink-200">
+              <h3 className="text-lg font-bold text-pink-700 mb-2">{tier.tier} Tier</h3>
+              <div className="text-2xl font-extrabold text-pink-600 mb-2">{tier.price}</div>
+              <ul className="mb-4 text-gray-700 list-disc pl-5">
+                {tier.features.map((f, i) => (
+                  <li key={i}>{f}</li>
+                ))}
+              </ul>
+              <button className="mt-auto px-4 py-2 bg-pink-600 text-white rounded hover:bg-pink-700 transition">Select</button>
             </div>
           ))}
         </div>
