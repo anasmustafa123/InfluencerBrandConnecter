@@ -38,7 +38,7 @@ export default function HomePage() {
                         Find Influencers
                     </Link>
                     <Link
-                        href="/marketingfilter"
+                        href="/packages"
                         className="px-8 py-4 rounded-full bg-pink-600 text-white font-semibold shadow-md hover:bg-pink-700 transition text-lg"
                     >
                         Marketing Packages
