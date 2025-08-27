@@ -4,7 +4,7 @@ export default function HomePage() {
     return (
         <div className="min-h-screen bg-white flex flex-col">
             {/* Header */}
-            <header className="w-full flex justify-between items-center px-8 py-6 shadow-sm bg-white">
+            <header className="w-full flex justify-between items-center px-8 py-6 shadow-sm bg-white sticky top-0 z-10">
                 <h1 className="text-3xl font-bold text-indigo-700 tracking-tight">BrandLink</h1>
                 <div className="flex gap-3">
                     <Link
@@ -23,11 +23,19 @@ export default function HomePage() {
             </header>
 
             {/* Hero Section */}
-            <section className="bg-gradient-to-br from-indigo-50 to-white py-16 px-4 text-center">
+            <section
+                className="bg-gradient-to-br from-indigo-50 to-white h-screen flex flex-col justify-center items-center px-4 text-center"
+                style={{
+                    backgroundImage: "url('/hero-bg.jpg')",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat"
+                }}
+            >
                 <h2 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6">
                     The Easy Way to Connect <span className="text-indigo-600">Influencers</span> & <span className="text-pink-600">Brands</span>
                 </h2>
-                <p className="max-w-2xl mx-auto text-gray-600 text-xl mb-8">
+                <p className="max-w-2xl mx-auto  text-xl mb-8">
                     Grow your influence or launch your next campaign. Safe, easy, and effective collaborations in one platform.
                 </p>
                 <div className="flex flex-col md:flex-row gap-4 justify-center mt-8">
