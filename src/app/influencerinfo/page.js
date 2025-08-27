@@ -17,9 +17,9 @@ export default function InfluencerInfoPage() {
         <div className="mt-8 flex flex-wrap justify-center gap-6 items-center opacity-80">
           {/* Trusted brands logos (replace src with your own or use placeholders) */}
           <img src="/trusted1.svg" alt="Trusted Brand 1" className="h-8" />
-          <img src="/trusted2.svg" alt="Trusted Brand 2" className="h-8" />
-          <img src="/trusted3.svg" alt="Trusted Brand 3" className="h-8" />
-          <img src="/trusted4.svg" alt="Trusted Brand 4" className="h-8" />
+          <img src="./trusted2.svg" alt="Trusted Brand 2" className="h-8" />
+          <img src="./trusted3.svg" alt="Trusted Brand 3" className="h-8" />
+          <img src="./trusted4.svg" alt="Trusted Brand 4" className="h-8" />
         </div>
       </section>
 
