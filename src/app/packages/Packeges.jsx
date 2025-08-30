@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import {
     Users,
     Image,
@@ -12,12 +13,13 @@ import {
     {
       title: "Starter",
       tagline: "Best for local testing in a single market",
-      features: [
-        { icon: <Users className="w-5 h-5 text-indigo-600" />, text: "1–2 micro-influencers (5k–20k followers)" },
-        { icon: <Image className="w-5 h-5 text-indigo-600" />, text: "1 Instagram post + 2 IG stories" },
-        { icon: <Globe className="w-5 h-5 text-green-500" />, text: "Instagram only" },
-        { icon: <BarChart2 className="w-5 h-5 text-indigo-600" />, text: "Link in bio → 3 days" },
-      ],
+      numberOfInfluencers: 1,
+      instaContent: "1 Instagram post",
+      tiktokContent: "N/A",
+      youtubeContent: "N/A",
+      otherContent: "2 IG stories",
+      platform: "Instagram only",
+      linkInBioTime: "Link in bio → 3 days",
       metrics: [
         { label: "Reach", value: "10k–30k" },
         { label: "Views", value: "~5k–10k" },
@@ -30,12 +32,13 @@ import {
     {
       title: "Growth",
       tagline: "Expand regionally with more influencers & platforms",
-      features: [
-        { icon: <Users className="w-5 h-5 text-indigo-600" />, text: "3–5 mid-tier influencers (20k–100k followers)" },
-        { icon: <Image className="w-5 h-5 text-indigo-600" />, text: "2 IG posts + 4 IG stories + 1 TikTok" },
-        { icon: <Globe className="w-5 h-5 text-blue-500" />, text: "Instagram + TikTok" },
-        { icon: <BarChart2 className="w-5 h-5 text-indigo-600" />, text: "Link in bio → 1 week" },
-      ],
+      numberOfInfluencers: 4,
+      instaContent: "2 IG posts",
+      tiktokContent: "1 TikTok",
+      youtubeContent: "N/A",
+      otherContent: "4 IG stories",
+      platform: "Instagram + TikTok",
+      linkInBioTime: "Link in bio → 1 week",
       metrics: [
         { label: "Reach", value: "50k–150k" },
         { label: "Views", value: "~20k–50k" },
@@ -48,12 +51,13 @@ import {
     {
       title: "Premium",
       tagline: "Perfect for multi-country campaigns with strong brand push",
-      features: [
-        { icon: <Users className="w-5 h-5 text-indigo-600" />, text: "5–8 influencers (50k–300k followers)" },
-        { icon: <Image className="w-5 h-5 text-indigo-600" />, text: "3 IG posts + 6 IG stories + 2 TikToks + 1 YouTube Shorts" },
-        { icon: <Globe className="w-5 h-5 text-purple-500" />, text: "Instagram + TikTok + YouTube Shorts" },
-        { icon: <BarChart2 className="w-5 h-5 text-indigo-600" />, text: "Link in bio → 2 weeks" },
-      ],
+      numberOfInfluencers: 6,
+      instaContent: "3 IG posts",
+      tiktokContent: "2 TikToks",
+      youtubeContent: "1 YouTube Shorts",
+      otherContent: "6 IG stories",
+      platform: "Instagram + TikTok + YouTube Shorts",
+      linkInBioTime: "Link in bio → 2 weeks",
       metrics: [
         { label: "Reach", value: "200k–500k" },
         { label: "Views", value: "~100k–250k" },
@@ -66,12 +70,13 @@ import {
     {
       title: "Elite",
       tagline: "For global launches and maximum exposure",
-      features: [
-        { icon: <Users className="w-5 h-5 text-indigo-600" />, text: "10+ influencers (100k–1M+ followers)" },
-        { icon: <Image className="w-5 h-5 text-indigo-600" />, text: "5 IG posts + 10 IG stories + 3 TikToks + 2 YouTube videos + optional blogs" },
-        { icon: <Globe className="w-5 h-5 text-yellow-500" />, text: "Instagram + TikTok + YouTube + optional X/Twitter" },
-        { icon: <BarChart2 className="w-5 h-5 text-indigo-600" />, text: "Link in bio → 1 month" },
-      ],
+      numberOfInfluencers: 10,
+      instaContent: "5 IG posts",
+      tiktokContent: "3 TikToks",
+      youtubeContent: "2 YouTube videos",
+      otherContent: "10 IG stories + optional blogs",
+      platform: "Instagram + TikTok + YouTube + optional X/Twitter",
+      linkInBioTime: "Link in bio → 1 month",
       metrics: [
         { label: "Reach", value: "1M–3M" },
         { label: "Views", value: "~500k–1M" },
@@ -84,6 +89,8 @@ import {
   ];
   
   export default function Packages() {
+    const router = useRouter();
+  
     return (
       <div className="py-10 px-4 max-w-7xl mx-auto relative min-h-screen bg-white">
         {/* Home Button */}
@@ -109,12 +116,22 @@ import {
               </div>
               <div className="text-sm text-gray-500 mb-4">{pkg.tagline}</div>
               <ul className="mb-4 space-y-2">
-                {pkg.features.map((f, idx) => (
-                  <li key={idx} className="flex items-center gap-2">
-                    {f.icon}
-                    <span>{f.text}</span>
-                  </li>
-                ))}
+                <li className="flex items-center gap-2">
+                  <Users className="w-5 h-5 text-indigo-600" />
+                  <span>{pkg.numberOfInfluencers}</span> infleuncers
+                </li>
+                <li className="flex items-center gap-2">
+                  <Image className="w-5 h-5 text-indigo-600" />
+                  <span>{[pkg.instaContent, pkg.tiktokContent, pkg.youtubeContent, pkg.otherContent].filter(item => item && item.trim().toLowerCase() !== "n/a").join(" + ")}</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Globe className="w-5 h-5 text-indigo-600" />
+                  <span>{pkg.platform}</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <BarChart2 className="w-5 h-5 text-indigo-600" />
+                  <span>{pkg.linkInBioTime}</span>
+                </li>
               </ul>
               <div className="mb-4">
                 <div className="flex items-center gap-2 mb-1">
@@ -139,28 +156,7 @@ import {
               </div>
               <button className="mt-auto bg-indigo-600 text-white rounded-xl py-2 px-4 font-semibold hover:bg-indigo-700 transition" 
                onClick={async () => {
-                try {
-                  const res = await fetch("/api/send-email", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      to: "amylalex25@gmail.com ", 
-                      subject: "Package Selected 🎉",
-                      text: "You have successfully chosen your package.",
-                      html: "<p><strong>Congrats!</strong> You have successfully chosen your package.</p>",
-                    }),
-                  });
-            
-                  const data = await res.json();
-                  if (data.success) {
-                    alert("✅ Email sent successfully!");
-                  } else {
-                    alert("❌ Failed to send email: " + data.error);
-                  }
-                } catch (err) {
-                  console.error("Error sending email:", err);
-                  alert("⚠️ Something went wrong.");
-                }
+                router.push(`/packageoverview?package=${encodeURIComponent(JSON.stringify(pkg))}`);
               }}>
                 Choose Package
               </button>
