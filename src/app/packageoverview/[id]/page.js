@@ -6,7 +6,6 @@ import { createNewDeal } from "@/lib/deals";
 export default async function Page({ params }) {
   const { id: package_id} = await params;
   const pkg = await getPackageById(package_id);  
-  createNewDeal(package_id, "1");
   const influencers = [
     {
       id: 1,

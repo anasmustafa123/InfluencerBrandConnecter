@@ -10,89 +10,7 @@ import {
   } from "lucide-react";
   import { useEffect } from 'react';
   import { getAllPackages } from '@/lib/package';
-  const testpackages = [
-    {
-      title: "Starter",
-      id: 1,
-      tagline: "Best for local testing in a single market",
-      numberOfInfluencers: 1,
-      instaContent: "1 Instagram post",
-      tiktokContent: "N/A",
-      youtubeContent: "N/A",
-      otherContent: "2 IG stories",
-      platform: "Instagram only",
-      linkInBioTime: "Link in bio → 3 days",
-      metrics: [
-        { label: "Reach", value: "10k–30k" },
-        { label: "Views", value: "~5k–10k" },
-        { label: "Conversions", value: "~50–150" },
-      ],
-      region: { label: "Local", color: "bg-green-500" },
-      duration: "1 week",
-      price: "$499",
-    },
-    {
-      title: "Growth",
-      id: 2,
-      tagline: "Expand regionally with more influencers & platforms",
-      numberOfInfluencers: 4,
-      instaContent: "2 IG posts",
-      tiktokContent: "1 TikTok",
-      youtubeContent: "N/A",
-      otherContent: "4 IG stories",
-      platform: "Instagram + TikTok",
-      linkInBioTime: "Link in bio → 1 week",
-      metrics: [
-        { label: "Reach", value: "50k–150k" },
-        { label: "Views", value: "~20k–50k" },
-        { label: "Conversions", value: "~200–500" },
-      ],
-      region: { label: "Regional", color: "bg-blue-500" },
-      duration: "2–3 weeks",
-      price: "$999",
-    },
-    {
-      title: "Premium",
-      id: 3,
-      tagline: "Perfect for multi-country campaigns with strong brand push",
-      numberOfInfluencers: 6,
-      instaContent: "3 IG posts",
-      tiktokContent: "2 TikToks",
-      youtubeContent: "1 YouTube Shorts",
-      otherContent: "6 IG stories",
-      platform: "Instagram + TikTok + YouTube Shorts",
-      linkInBioTime: "Link in bio → 2 weeks",
-      metrics: [
-        { label: "Reach", value: "200k–500k" },
-        { label: "Views", value: "~100k–250k" },
-        { label: "Conversions", value: "~800–1,500" },
-      ],
-      region: { label: "Multi-country", color: "bg-purple-500" },
-      duration: "1–2 months",
-      price: "$2499",
-    },
-    {
-      title: "Elite",
-      id: 4,
-      tagline: "For global launches and maximum exposure",
-      numberOfInfluencers: 10,
-      instaContent: "5 IG posts",
-      tiktokContent: "3 TikToks",
-      youtubeContent: "2 YouTube videos",
-      otherContent: "10 IG stories + optional blogs",
-      platform: "Instagram + TikTok + YouTube + optional X/Twitter",
-      linkInBioTime: "Link in bio → 1 month",
-      metrics: [
-        { label: "Reach", value: "1M–3M" },
-        { label: "Views", value: "~500k–1M" },
-        { label: "Conversions", value: "~5,000–15,000" },
-      ],
-      region: { label: "Global", color: "bg-yellow-400" },
-      duration: "3 months",
-      price: "$4999",
-    },
-  ];
-
+import { createNewDeal } from '@/lib/deals';
   
   export default function Packages({packages}) {
     const router = useRouter();
@@ -110,7 +28,6 @@ import {
     
     return (
       <div className="py-10 px-4 max-w-7xl mx-auto relative min-h-screen bg-white">
-        {/* Home Button */}
         <div className="fixed top-6 left-6 z-50">
           <a href="/home" className="inline-flex items-center p-2 rounded-full bg-white border border-gray-300 hover:bg-gray-100 shadow" aria-label="Go to Home">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-indigo-600">
@@ -173,6 +90,7 @@ import {
               </div>
               <button className="mt-auto bg-indigo-600 text-white rounded-xl py-2 px-4 font-semibold hover:bg-indigo-700 transition" 
                onClick={async () => {
+                createNewDeal(pkg.id, "1");
                 router.push(`/packageoverview/${pkg.id}`);
               }}>
                 Choose Package
