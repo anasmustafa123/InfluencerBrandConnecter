@@ -1,17 +1,13 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense } from "react";
+import { getPackageById } from "@/lib/package";
 import { FaComments } from "react-icons/fa";
+import { createNewDeal } from "@/lib/deals";
 
-export default function PackageOverview() {
-  const searchParams = useSearchParams();
-  const packageData = JSON.parse(
-    decodeURIComponent(searchParams.get("package"))
-  );
-
-  // Dummy influencer data
-  const [influencers] = useState([
+export default async function Page({ params }) {
+  const { id: package_id} = await params;
+  const pkg = await getPackageById(package_id);  
+  createNewDeal(package_id, "1");
+  const influencers = [
     {
       id: 1,
       name: "Sarah Johnson",
@@ -36,13 +32,11 @@ export default function PackageOverview() {
       milestones: ["Draft", "Posted", "Reviewed"],
       currentMilestone: 2,
     },
-  ]);
+  ];
 
   return (
-    <div className="py-10 px-4 max-w-5xl mx-auto space-y-10">
-        
-      {/* Home Button - Top Right */}
-      <div className="absolute top-6 right-6 z-10">
+    <Suspense fallback={<div>Loading...</div>}>
+         <div className="absolute top-6 right-6 z-10">
         <a
           href="/home"
           className="inline-flex items-center p-2 rounded-full bg-white border border-gray-300 hover:bg-gray-100 shadow"
@@ -65,22 +59,19 @@ export default function PackageOverview() {
         </a>
       </div>
         
-      {/* Header */}
       <h1 className="text-3xl font-bold mb-6">
-        {packageData.title} Package Overview
+        {pkg.title} Package Overview
       </h1>
 
-      {/* Top Section: Overview + Budget */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Left Column: Package Overview */}
         <div className="bg-white rounded-xl shadow-lg p-6">
           <h2 className="text-xl font-bold mb-4">Package Overview</h2>
           <p className="text-gray-600 mb-2">
-            <strong>Campaign Duration:</strong> {packageData.duration}
+            <strong>Campaign Duration:</strong> {pkg.days_duration}
           </p>
           <p className="text-gray-600 mb-2">
             <strong>Number of Influencers:</strong>{" "}
-            {packageData.numberOfInfluencers}
+            {pkg.inf_num}
           </p>
           <p className="text-gray-600 mb-2">
             <strong>Estimated Reach:</strong> 120K
@@ -93,7 +84,6 @@ export default function PackageOverview() {
           </p>
         </div>
 
-        {/* Right Column: Budget */}
         <div className="bg-white rounded-xl shadow-lg p-6">
           <h2 className="text-xl font-bold mb-4">Budget & Spending</h2>
           <p className="mb-2">
@@ -111,7 +101,6 @@ export default function PackageOverview() {
         </div>
       </div>
 
-      {/* Influencer Progress */}
       <div className="bg-white rounded-xl shadow-lg p-6">
         <h2 className="text-xl font-bold mb-6">Influencer Progress</h2>
         <div className="space-y-4">
@@ -120,7 +109,6 @@ export default function PackageOverview() {
               key={inf.id}
               className="flex items-center justify-between border rounded-lg p-4"
             >
-              {/* Influencer Info */}
               <div className="flex items-center space-x-4">
                 <img
                   src={inf.profilePic}
@@ -133,7 +121,6 @@ export default function PackageOverview() {
                 </div>
               </div>
 
-              {/* Progress */}
               <div className="flex-1 mx-6">
                 <div className="flex justify-between text-xs text-gray-500 mb-1">
                   {inf.milestones.map((m, i) => (
@@ -152,7 +139,6 @@ export default function PackageOverview() {
                 </div>
               </div>
 
-              {/* Chat Icon */}
               <button className="text-indigo-600 hover:text-indigo-800">
                 <FaComments size={20} />
               </button>
@@ -161,7 +147,6 @@ export default function PackageOverview() {
         </div>
       </div>
 
-      {/* Content Section */}
       <div className="bg-white rounded-xl shadow-lg p-6">
         <h2 className="text-xl font-bold mb-6">Content Provided</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -183,12 +168,11 @@ export default function PackageOverview() {
         </div>
       </div>
 
-      {/* Bottom Section */}
       <div className="text-center">
         <button className="bg-green-600 text-white rounded-lg px-6 py-3 font-semibold hover:bg-green-700">
           Track Analytics 📊
         </button>
       </div>
-    </div>
-  );
+    </Suspense>
+  )
 }

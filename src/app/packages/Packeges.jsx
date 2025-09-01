@@ -8,10 +8,12 @@ import {
     Clock,
     BadgeDollarSign,
   } from "lucide-react";
-  
-  const packages = [
+  import { useEffect } from 'react';
+  import { getAllPackages } from '@/lib/package';
+  const testpackages = [
     {
       title: "Starter",
+      id: 1,
       tagline: "Best for local testing in a single market",
       numberOfInfluencers: 1,
       instaContent: "1 Instagram post",
@@ -31,6 +33,7 @@ import {
     },
     {
       title: "Growth",
+      id: 2,
       tagline: "Expand regionally with more influencers & platforms",
       numberOfInfluencers: 4,
       instaContent: "2 IG posts",
@@ -50,6 +53,7 @@ import {
     },
     {
       title: "Premium",
+      id: 3,
       tagline: "Perfect for multi-country campaigns with strong brand push",
       numberOfInfluencers: 6,
       instaContent: "3 IG posts",
@@ -69,6 +73,7 @@ import {
     },
     {
       title: "Elite",
+      id: 4,
       tagline: "For global launches and maximum exposure",
       numberOfInfluencers: 10,
       instaContent: "5 IG posts",
@@ -87,10 +92,22 @@ import {
       price: "$4999",
     },
   ];
+
   
-  export default function Packages() {
+  export default function Packages({packages}) {
     const router = useRouter();
-  
+    console.log({packages})
+    useEffect(
+      () => {
+        async function fetch_data() {
+          let all_packages = await getAllPackages(false);
+          console.log({all_packages})
+          return all_packages
+        } 
+        fetch_data(false);
+      }, []
+    )
+    
     return (
       <div className="py-10 px-4 max-w-7xl mx-auto relative min-h-screen bg-white">
         {/* Home Button */}
@@ -110,27 +127,27 @@ import {
             >
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-xl font-semibold">{pkg.title}</h2>
-                <span className={`text-xs text-white px-3 py-1 rounded-full font-medium ${pkg.region.color}`}>
-                  {pkg.region.label}
+                <span className={`text-xs text-white px-3 py-1 rounded-full font-medium ${pkg.region_id.color}`}>
+                  {pkg.region_id.label}
                 </span>
               </div>
               <div className="text-sm text-gray-500 mb-4">{pkg.tagline}</div>
               <ul className="mb-4 space-y-2">
                 <li className="flex items-center gap-2">
                   <Users className="w-5 h-5 text-indigo-600" />
-                  <span>{pkg.numberOfInfluencers}</span> infleuncers
+                  <span>{pkg.inf_num}</span> infleuncers
                 </li>
                 <li className="flex items-center gap-2">
                   <Image className="w-5 h-5 text-indigo-600" />
-                  <span>{[pkg.instaContent, pkg.tiktokContent, pkg.youtubeContent, pkg.otherContent].filter(item => item && item.trim().toLowerCase() !== "n/a").join(" + ")}</span>
+                  <span>{pkg.package_platforms.map(item => item.details).filter(item => item && item.trim().toLowerCase() !== "n/a").join(" + ")}</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Globe className="w-5 h-5 text-indigo-600" />
-                  <span>{pkg.platform}</span>
+                  <span>{pkg.package_platforms.map(item => item.platform_id).join(" + ")}</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <BarChart2 className="w-5 h-5 text-indigo-600" />
-                  <span>{pkg.linkInBioTime}</span>
+                  <span>some link</span>
                 </li>
               </ul>
               <div className="mb-4">
@@ -139,7 +156,7 @@ import {
                   <span className="font-medium">Metrics</span>
                 </div>
                 <div className="flex flex-wrap gap-2 text-xs">
-                  {pkg.metrics.map((m) => (
+                  {pkg.package_metrics.map((m) => (
                     <span key={m.label} className="bg-gray-100 rounded px-2 py-1">
                       <span className="font-semibold">{m.label}:</span> {m.value}
                     </span>
@@ -148,15 +165,15 @@ import {
               </div>
               <div className="flex items-center gap-2 mb-4">
                 <Clock className="w-4 h-4 text-indigo-600" />
-                <span className="text-sm">{pkg.duration}</span>
+                <span className="text-sm">{pkg.days_duration}</span>
               </div>
               <div className="flex items-center gap-2 mb-4">
                 <BadgeDollarSign className="w-4 h-4 text-indigo-600" />
-                <span className="text-lg font-bold">Starts at {pkg.price}</span>
+                <span className="text-lg font-bold">Starts at {pkg.price} $</span>
               </div>
               <button className="mt-auto bg-indigo-600 text-white rounded-xl py-2 px-4 font-semibold hover:bg-indigo-700 transition" 
                onClick={async () => {
-                router.push(`/packageoverview?package=${encodeURIComponent(JSON.stringify(pkg))}`);
+                router.push(`/packageoverview/${pkg.id}`);
               }}>
                 Choose Package
               </button>

@@ -1,0 +1,50 @@
+onClick={async () => {
+                try {
+                  const res = await fetch("/api/send-email", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      to: "amylalex25@gmail.com ", 
+                      subject: "Package Selected 🎉",
+                      text: "You have successfully chosen your package.",
+                      html: `
+                      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                        <h2 style="color:#4F46E5;">🎉 You’ve Been Selected for a Package!</h2>
+                        <p>Hello,</p>
+                        <p><strong>BrandX</strong> has chosen your brand to collaborate on their <strong>Premium Marketing Package</strong>. This package involves:</p>
+                        <ol>
+                          <li>Create 2 Instagram posts with the provided branding.</li>
+                          <li>Publish 1 YouTube video review.</li>
+                          <li>Engage with followers by replying to comments for 7 days.</li>
+                          <li>Share 3 Twitter (X) posts highlighting the campaign.</li>
+                        </ol>
+                        <p>Please confirm if you’re willing to participate in this campaign. Use the buttons below:</p>
+                        
+                        <div style="margin: 20px 0;">
+                          <a href="https://agentico.site/approve?package_id=${pkg.id}" 
+                             style="background:#16A34A;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold;margin-right:10px;">
+                             ✅ Approve
+                          </a>
+                          <a href="https://agentico.site/reject?package_id=${pkg.id}" 
+                             style="background:#DC2626;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold;">
+                             ❌ Reject
+                          </a>
+                        </div>                        
+                        <p>If you do not respond within 7 days, this invitation may expire.</p>
+                        <p>Thank you,<br>The Agentico Team</p>
+                      </div>
+                    `,
+                    }),
+                  });
+            
+                  const data = await res.json();
+                  if (data.success) {
+                    alert("✅ Email sent successfully!");
+                  } else {
+                    alert("❌ Failed to send email: " + data.error);
+                  }
+                } catch (err) {
+                  console.error("Error sending email:", err);
+                  alert("⚠️ Something went wrong.");
+                }
+              }}>

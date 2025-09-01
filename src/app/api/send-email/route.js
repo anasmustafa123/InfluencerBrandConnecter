@@ -8,7 +8,7 @@ export async function POST(req) {
 
     const msg = {
       to, 
-      from: process.env.NEXT_PUBLIC_SENDGRID_SENDER, // must be from your verified domain
+      from: process.env.NEXT_PUBLIC_SENDGRID_SENDER,
       subject,
       text,
       html,
