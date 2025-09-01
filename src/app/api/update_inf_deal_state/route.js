@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabase_client";
 
 export async function GET(req) {  
   const { data, error } = await supabase
