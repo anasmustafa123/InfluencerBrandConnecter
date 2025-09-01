@@ -172,9 +172,8 @@ import {
                 <span className="text-lg font-bold">Starts at {pkg.price} $</span>
               </div>
               <button className="mt-auto bg-indigo-600 text-white rounded-xl py-2 px-4 font-semibold hover:bg-indigo-700 transition" 
-               onClick={async () => {
-                router.push(`/packageoverview/${pkg.id}`);
-              }}>
+                onClick={() => router.push("/packagesetup")}
+              >
                 Choose Package
               </button>
             </div>
