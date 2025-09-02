@@ -42,7 +42,11 @@ const onSubmit = async (data) => {
     // await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate request
     try {
         await createUser(data.name, data.email, data.password, role);   
-        router.push("/setup");
+        if (role === "brand") {
+          router.push("/brandprofile");
+        } else if (role === "influencer") {
+          router.push("/influencerprofile");
+        }
     } catch (error) {
         alert(error.message)
     }

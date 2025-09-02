@@ -8,6 +8,15 @@ export default function ProfileSetup() {
   const [step, setStep] = useState(1);
   const router = useRouter();
 
+  const handleSetupComplete = () => {
+    // Assume you have a variable called 'role' that is either 'brand' or 'influencer'
+    if (role === "brand") {
+      router.push("/brandprofile");
+    } else if (role === "influencer") {
+      router.push("/influencerprofile");
+    }
+  };
+
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
@@ -33,7 +42,13 @@ export default function ProfileSetup() {
       <main className="flex-1 bg-white p-8 relative">
         {/* Skip button */}
         <button
-          onClick={() => router.push("/profile")}
+          onClick={() => {
+            if (role === "brand") {
+              router.push("/brandprofile");
+            } else if (role === "influencer") {
+              router.push("/influencerprofile");
+            }
+          }}
           className="absolute top-4 right-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 shadow"
         >
           Skip
@@ -79,25 +94,24 @@ export default function ProfileSetup() {
         )}
 
         {/* Progress bar under inputs */}
-<div className="mt-10">
-  <div className="relative w-full">
-    {/* Full bar */}
-    <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-200 -translate-y-1/2 rounded"></div>
+        <div className="mt-10">
+          <div className="relative w-full">
+            {/* Full bar */}
+            <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-200 -translate-y-1/2 rounded"></div>
 
-    {/* Filled bar */}
-    <div
-      className="absolute top-1/2 left-0 h-1 bg-indigo-300 -translate-y-1/2 transition-all rounded"
-      style={{ width: step === 1 ? "50%" : "100%" }}
-    ></div>
+            {/* Filled bar */}
+            <div
+              className="absolute top-1/2 left-0 h-1 bg-indigo-300 -translate-y-1/2 transition-all rounded"
+              style={{ width: step === 1 ? "50%" : "100%" }}
+            ></div>
 
-    {/* Tracking circle */}
-    <div
-      className="absolute top-1/2 w-6 h-6 bg-indigo-400 rounded-full border-4 border-white shadow -translate-y-1/2 transition-all"
-      style={{ left: step === 1 ? "50%" : "100%" }}
-    ></div>
-  </div>
-</div>
-
+            {/* Tracking circle */}
+            <div
+              className="absolute top-1/2 w-6 h-6 bg-indigo-400 rounded-full border-4 border-white shadow -translate-y-1/2 transition-all"
+              style={{ left: step === 1 ? "50%" : "100%" }}
+            ></div>
+          </div>
+        </div>
 
         {/* Navigation */}
         <div className="flex justify-between mt-8">
@@ -117,7 +131,10 @@ export default function ProfileSetup() {
               Next
             </button>
           ) : (
-            <button className="px-4 py-2 bg-green-500 text-white rounded">
+            <button
+              onClick={handleSetupComplete}
+              className="px-4 py-2 bg-green-500 text-white rounded"
+            >
               Finish Setup
             </button>
           )}
