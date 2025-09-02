@@ -21,21 +21,49 @@ password: Yup.string()
 export default function LoginForm() {
     const router = useRouter();
 
-  // ✅ Connect form to Yup schema
-const {
-    register,
-    handleSubmit,
-    formState: { errors },
-} = useForm({
-    resolver: yupResolver(schema),
-});
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(schema),
+    });
 
-const onSubmit = (data) => {
-    console.log("Logging in with:", data);
-    console.log("Login successful:", data);
-    alert(`Login attempt sent!\nEmail: ${data.email}`);
-    router.push("/profile");
-};
+const onSubmit = async (data) => {
+
+    const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: data.email, password: data.password }),
+    });
+
+    const res_data = await res.json();
+    if (res_data.success) {
+        router.push("/profile");
+    }
+    console.log({res_data}); 
+
+
+    // try {
+    //   const res = await fetch("/api/login", {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify(data),
+    //   });
+
+    //   if (res.ok) {
+    //     alert("Login successful!");
+    //     router.push("/profile"); // redirect after login
+    //   } else {
+    //     const err = await res.json();
+    //     alert(err.message || "Login failed");
+    //   }
+    // } catch (error) {
+    //   console.error("Login error:", error);
+    //   alert("Something went wrong. Try again.");
+    // }
+
+  };
 
 return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -43,7 +71,6 @@ return (
         <h2 className="text-2xl font-bold text-center text-gray-800">Login</h2>
 
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-          {/* Email */}
         <div>
             <label className="block text-sm font-medium text-gray-700">
             Email
@@ -60,7 +87,6 @@ return (
             )}
         </div>
 
-          {/* Password */}
         <div>
             <label className="block text-sm font-medium text-gray-700">
             Password
@@ -76,8 +102,6 @@ return (
             </p>
             )}
         </div>
-
-          {/* Submit */}
         <button
             type="submit"
             className="w-full py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition"
