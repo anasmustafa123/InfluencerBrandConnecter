@@ -41,6 +41,9 @@ const onSubmit = async (data) => {
     if (res_data.success) {
         router.push("/profile");
     }
+    if (! res_data.success) {
+        alert(res_data.message);
+    }
     console.log({res_data}); 
 
 
