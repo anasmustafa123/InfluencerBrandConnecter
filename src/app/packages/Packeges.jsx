@@ -88,11 +88,17 @@ import { createNewDeal } from '@/lib/deals';
                 <BadgeDollarSign className="w-4 h-4 text-indigo-600" />
                 <span className="text-lg font-bold">Starts at {pkg.price} $</span>
               </div>
-              <button className="mt-auto bg-indigo-600 text-white rounded-xl py-2 px-4 font-semibold hover:bg-indigo-700 transition" 
-               onClick={async () => {
-                createNewDeal(pkg.id, "1");
-                router.push(`/packageoverview/${pkg.id}`);
-              }}>
+              <button
+                className="mt-auto bg-indigo-600 text-white rounded-xl py-2 px-4 font-semibold hover:bg-indigo-700 transition"
+                onClick={() => {
+                  // Dummy influencers for demonstration; replace with real selection logic if needed
+                  const influencers = [
+                    { id: 1, name: "Sarah Johnson", profilePic: "https://randomuser.me/api/portraits/women/1.jpg", platform: "Instagram", milestones: ["Contacted", "Content Sent", "Published"], currentMilestone: 1 },
+                    { id: 2, name: "Mike Smith", profilePic: "https://randomuser.me/api/portraits/men/1.jpg", platform: "TikTok", milestones: ["Contacted", "Content Sent", "Published"], currentMilestone: 0 },
+                  ];
+                  router.push(`/packagesetup?pkg=${encodeURIComponent(JSON.stringify(pkg))}&influencers=${encodeURIComponent(JSON.stringify(influencers))}`);
+                }}
+              >
                 Choose Package
               </button>
             </div>
