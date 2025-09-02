@@ -10,7 +10,6 @@ import {
   } from "lucide-react";
   import { useEffect } from 'react';
   import { getAllPackages } from '@/lib/package';
-import { createNewDeal } from '@/lib/deals';
   
   export default function Packages({packages}) {
     const router = useRouter();
