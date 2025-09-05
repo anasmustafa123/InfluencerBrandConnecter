@@ -17,9 +17,7 @@ export async function authUser(email, password) {
         .eq("email", email)
         .eq("password", password)
         .single();
-
-    if (error) throw error;
-    return data;
+    return {data: data, error: error ? error : false}
 }
 export async function getUsers() {
     const { data, error } = await supabase

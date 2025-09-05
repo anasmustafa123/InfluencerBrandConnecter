@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 
 // ✅ Define Yup schema
@@ -20,7 +21,11 @@ password: Yup.string()
 
 export default function LoginForm() {
     const router = useRouter();
-
+    useEffect(
+        () => {
+            // console.log({token: getJWTToken()})
+        }, []
+    )
     const {
         register,
         handleSubmit,
@@ -31,7 +36,7 @@ export default function LoginForm() {
 
 const onSubmit = async (data) => {
 
-    const res = await fetch("/api/login", {
+    const res = await fetch("/api/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: data.email, password: data.password }),

@@ -1,7 +1,7 @@
 import LoginForm from "./LoginPage";
 
-export default function Page() {
+export default async function Page() {
     return (
-        <LoginForm />
+        <LoginForm isUser={isUser}/>
     );
 }
