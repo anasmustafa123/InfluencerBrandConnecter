@@ -32,10 +32,10 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
+  <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 py-10 px-4 flex flex-col items-center">
       {/* Home Button */}
-      <div className="mb-4">
-        <a href="/home" className="inline-flex items-center p-2 rounded-full bg-white border border-gray-300 hover:bg-gray-100 shadow" aria-label="Go to Home">
+      <div className="mb-8 flex justify-start w-full max-w-5xl">
+        <a href="/home" className="inline-flex items-center p-2 rounded-full bg-white/70 border border-gray-200 hover:bg-white/90 shadow-lg backdrop-blur-md transition" aria-label="Go to Home">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-indigo-600">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l9-9 9 9M4.5 10.5V21h15v-10.5" />
           </svg>
@@ -43,11 +43,11 @@ export default function ProfilePage() {
       </div>
       <div className="mx-auto w-full max-w-5xl">
         {/* Header card */}
-        <div className="bg-white rounded-2xl shadow-md p-6 md:p-8">
-          <div className="flex flex-col md:flex-row md:items-center gap-6">
+        <div className="bg-white/60 backdrop-blur-lg rounded-3xl shadow-xl p-6 md:p-10 border border-white/40">
+          <div className="flex flex-col md:flex-row md:items-center gap-8">
             {/* Avatar */}
             <div className="flex-shrink-0 flex items-center justify-center">
-              <div className="relative w-32 h-32 md:w-36 md:h-36 rounded-full overflow-hidden border-4 border-blue-500 shadow">
+              <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-indigo-400 shadow-lg">
                 <Image
                   src={profile.avatar}
                   alt={profile.name}
@@ -58,104 +58,104 @@ export default function ProfilePage() {
               </div>
             </div>
             {/* Info */}
-            <div className="flex-1">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{profile.name}</h1>
-                  <p className="text-sm text-gray-500">{profile.handle}</p>
+              <div className="flex-1">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 drop-shadow-sm">{profile.name}</h1>
+                    <p className="text-base text-indigo-500 font-medium">{profile.handle}</p>
+                  </div>
+                  <div className="hidden md:flex items-center space-x-3">
+                    <button
+                      onClick={() => alert("Message / Contact clicked")}
+                      className="px-5 py-2 border border-indigo-300 rounded-lg text-sm font-medium bg-white/70 hover:bg-indigo-50 shadow"
+                    >
+                      Message
+                    </button>
+                    <button
+                      onClick={() => alert("Contact form / booking clicked")}
+                      className="px-5 py-2 bg-gradient-to-r from-indigo-500 to-pink-500 text-white rounded-lg text-sm font-semibold shadow hover:from-indigo-600 hover:to-pink-600"
+                    >
+                      Contact / Book
+                    </button>
+                  </div>
                 </div>
-                <div className="hidden md:flex items-center space-x-3">
+                <p className="mt-4 text-gray-700 text-lg italic">{profile.bio}</p>
+                <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:gap-8 gap-3">
+                  <div className="flex items-center gap-8">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-gray-900">{profile.followers}</div>
+                      <div className="text-xs text-gray-500">Followers</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-gray-900">{profile.avgEngagement}</div>
+                      <div className="text-xs text-gray-500">Avg engagement</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {profile.platforms.map((p) => (
+                      <a
+                        key={p.name}
+                        href={p.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-white/70 border border-indigo-100 rounded-full text-sm text-indigo-700 font-semibold shadow hover:bg-indigo-50 transition"
+                      >
+                        <span className="text-lg">{p.badge}</span>
+                        <span className="hidden sm:inline">{p.name}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                <div className="mt-6 md:hidden flex items-center gap-3">
                   <button
                     onClick={() => alert("Message / Contact clicked")}
-                    className="px-4 py-2 border rounded-lg text-sm font-medium hover:bg-gray-50"
+                    className="flex-1 px-4 py-2 border border-indigo-200 rounded-lg text-sm font-medium bg-white/70 hover:bg-indigo-50 shadow"
                   >
                     Message
                   </button>
                   <button
                     onClick={() => alert("Contact form / booking clicked")}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700"
+                    className="flex-1 px-4 py-2 bg-gradient-to-r from-indigo-500 to-pink-500 text-white rounded-lg text-sm font-semibold shadow hover:from-indigo-600 hover:to-pink-600"
                   >
-                    Contact / Book
+                    Contact
                   </button>
                 </div>
               </div>
-              <p className="mt-4 text-gray-700">{profile.bio}</p>
-              <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:gap-6 gap-3">
-                <div className="flex items-center gap-4">
-                  <div className="text-center">
-                    <div className="text-lg font-semibold text-gray-900">{profile.followers}</div>
-                    <div className="text-xs text-gray-500">Followers</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-lg font-semibold text-gray-900">{profile.avgEngagement}</div>
-                    <div className="text-xs text-gray-500">Avg engagement</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  {profile.platforms.map((p) => (
-                    <a
-                      key={p.name}
-                      href={p.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-50 border rounded-full text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      <span className="text-lg">{p.badge}</span>
-                      <span className="hidden sm:inline">{p.name}</span>
-                    </a>
-                  ))}
-                </div>
-              </div>
-              <div className="mt-6 md:hidden flex items-center gap-3">
-                <button
-                  onClick={() => alert("Message / Contact clicked")}
-                  className="flex-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-gray-50"
-                >
-                  Message
-                </button>
-                <button
-                  onClick={() => alert("Contact form / booking clicked")}
-                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700"
-                >
-                  Contact
-                </button>
-              </div>
-            </div>
           </div>
         </div>
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-gray-800">Services Offered</h2>
-              <div className="text-sm text-gray-500">Prices & delivery</div>
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-2xl font-bold text-indigo-700 tracking-tight">Services Offered</h2>
+              <div className="text-sm text-gray-500 font-medium">Prices & delivery</div>
             </div>
-            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-6">
               {services.map((s) => (
-                <div key={s.id} className="bg-white rounded-xl border p-4 shadow-sm hover:shadow-md transition flex flex-col">
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center text-2xl">
+                <div key={s.id} className="bg-white/70 backdrop-blur-lg rounded-2xl border border-indigo-100 p-6 shadow-lg hover:shadow-xl transition flex flex-col">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-indigo-100 to-pink-100 flex items-center justify-center text-3xl shadow">
                       <span>{s.icon}</span>
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
-                        <h3 className="text-md font-medium text-gray-900">{s.title}</h3>
-                        <div className="text-sm font-semibold text-gray-800">{s.price}</div>
+                        <h3 className="text-lg font-semibold text-gray-900">{s.title}</h3>
+                        <div className="text-base font-bold text-indigo-700">{s.price}</div>
                       </div>
                       <p className="mt-2 text-sm text-gray-600">{s.desc}</p>
                     </div>
                   </div>
-                  <div className="mt-4 flex items-center justify-between">
+                  <div className="mt-6 flex items-center justify-between">
                     <div className="text-xs text-gray-500">Delivery: 3–7 days</div>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleOrder(s)}
-                        className="px-3 py-1.5 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700"
+                        className="px-4 py-1.5 bg-gradient-to-r from-indigo-500 to-pink-500 text-white rounded-md text-sm font-semibold shadow hover:from-indigo-600 hover:to-pink-600"
                       >
                         Order
                       </button>
                       <button
                         onClick={() => alert("Message about this service")}
-                        className="px-3 py-1.5 border rounded-md text-sm hover:bg-gray-50"
+                        className="px-4 py-1.5 border border-indigo-200 rounded-md text-sm font-medium bg-white/70 hover:bg-indigo-50 shadow"
                       >
                         Message
                       </button>
@@ -165,26 +165,26 @@ export default function ProfilePage() {
               ))}
             </div>
           </div>
-          <aside className="bg-white rounded-xl border p-4 shadow-sm">
+          <aside className="bg-white/70 backdrop-blur-lg rounded-2xl border border-indigo-100 p-6 shadow-lg flex flex-col gap-6">
             <div>
-              <h3 className="text-md font-semibold text-gray-800">About</h3>
-              <p className="mt-2 text-sm text-gray-600">
+              <h3 className="text-lg font-bold text-indigo-700">About</h3>
+              <p className="mt-2 text-gray-700 text-base">
                 I specialise in brand partnerships and long-term collaborations. Open to one-off projects and long-term ambassador roles.
               </p>
             </div>
-            <div className="mt-4 border-t pt-4">
-              <h4 className="text-sm font-medium text-gray-800">Top stats</h4>
-              <ul className="mt-2 text-sm text-gray-600 space-y-2">
+            <div className="border-t pt-4">
+              <h4 className="text-base font-semibold text-indigo-600">Top stats</h4>
+              <ul className="mt-2 text-gray-700 space-y-2 text-sm">
                 <li>Avg reach: 25k</li>
                 <li>Preferred niches: Lifestyle, Travel</li>
                 <li>Response time: &lt; 24 hours</li>
               </ul>
             </div>
-            <div className="mt-4 border-t pt-4">
-              <h4 className="text-sm font-medium text-gray-800">Contact</h4>
+            <div className="border-t pt-4">
+              <h4 className="text-base font-semibold text-indigo-600">Contact</h4>
               <button
                 onClick={() => alert("Open contact form")}
-                className="mt-2 w-full px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                className="mt-2 w-full px-4 py-2 bg-gradient-to-r from-green-500 to-teal-400 text-white rounded-lg font-semibold shadow hover:from-green-600 hover:to-teal-500"
               >
                 Contact & Booking
               </button>

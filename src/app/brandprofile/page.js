@@ -55,7 +55,7 @@ export default function BrandProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-pink-50 py-10 px-4">
       {/* Back and Home Buttons */}
       <div className="fixed top-6 left-6 z-50">
         <button onClick={() => window.history.back()} className="inline-flex items-center p-2 rounded-full bg-white border border-gray-300 hover:bg-gray-100 shadow" aria-label="Go Back">
@@ -74,8 +74,9 @@ export default function BrandProfilePage() {
       <div className="pt-16 px-4 md:px-8">
         <div className="mx-auto w-full max-w-5xl">
           {/* Header card */}
-          <div className="bg-white rounded-2xl shadow-md p-6 md:p-8">
-            <div className="flex flex-col md:flex-row md:items-center gap-6">
+          <div className="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-8 border border-indigo-100 mb-8 relative overflow-hidden">
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br from-indigo-200 via-pink-100 to-white rounded-full opacity-40 z-0" />
+            <div className="flex flex-col md:flex-row md:items-center gap-6 z-10 relative">
               {/* Avatar */}
               <div className="flex-shrink-0 flex items-center justify-center">
                 <div className="relative w-32 h-32 md:w-36 md:h-36 rounded-full overflow-hidden border-4 border-pink-500 shadow">
@@ -92,11 +93,11 @@ export default function BrandProfilePage() {
               <div className="flex-1">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{brand.name}</h1>
+                    <h1 className="text-3xl font-extrabold text-indigo-700 mb-1">{brand.name}</h1>
                     <p className="text-sm text-gray-500">{brand.handle}</p>
                   </div>
                 </div>
-                <p className="mt-4 text-gray-700">{brand.bio}</p>
+                <p className="mt-4 text-gray-700 text-base">{brand.bio}</p>
                 {/* Brand Details */}
                 <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
@@ -116,9 +117,9 @@ export default function BrandProfilePage() {
             </div>
           </div>
           {/* Products */}
-          <div className="mt-10 bg-white rounded-2xl shadow-md p-6 md:p-8">
+          <div className="mt-10 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg p-8 border border-indigo-50">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-800">Products</h2>
+              <h2 className="text-2xl font-bold text-indigo-700">Products</h2>
               <button
                 aria-label="Add Product"
                 className="p-2 rounded-full bg-indigo-100 hover:bg-indigo-200 text-indigo-600 shadow"
@@ -131,8 +132,8 @@ export default function BrandProfilePage() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {products.map((product) => (
-                <div key={product.id} className="bg-gray-50 rounded-xl p-4 border shadow-sm relative group">
-                  <h3 className="font-semibold text-gray-900">{product.name}</h3>
+                <div key={product.id} className="bg-indigo-50/60 rounded-xl p-5 border shadow-sm relative group">
+                  <h3 className="font-semibold text-indigo-800 text-lg">{product.name}</h3>
                   <p className="text-gray-600 text-sm mt-1">{product.desc}</p>
                   <button
                     aria-label="Remove Product"
@@ -149,7 +150,7 @@ export default function BrandProfilePage() {
           </div>
           {/* Product Modal */}
           {showProductModal && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
               <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md relative border border-indigo-100">
                 <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onClick={() => setShowProductModal(false)}>&times;</button>
                 <h3 className="text-lg font-bold mb-4">Add Product</h3>
@@ -166,9 +167,9 @@ export default function BrandProfilePage() {
           )}
 
           {/* Campaigns */}
-          <div className="mt-10 bg-white rounded-2xl shadow-md p-6 md:p-8">
+          <div className="mt-10 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg p-8 border border-indigo-50">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-800">Current Campaigns</h2>
+              <h2 className="text-2xl font-bold text-indigo-700">Current Campaigns</h2>
               <a
                 aria-label="Add Campaign"
                 className="p-2 rounded-full bg-indigo-100 hover:bg-indigo-200 text-indigo-600 shadow"
@@ -181,14 +182,14 @@ export default function BrandProfilePage() {
             </div>
             <div className="space-y-4">
               {campaigns.map((camp) => (
-                <div key={camp.id} className="bg-gray-50 rounded-xl p-4 border shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div key={camp.id} className="bg-pink-50/60 rounded-xl p-5 border shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div>
-                    <h3 className="font-semibold text-gray-900">{camp.name}</h3>
+                    <h3 className="font-semibold text-pink-800 text-lg">{camp.name}</h3>
                     <p className="text-gray-600 text-sm mt-1">{camp.desc}</p>
                   </div>
                   <a
                     href="/analyticsview"
-                    className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-semibold shadow hover:bg-indigo-700 transition"
+                    className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-600 to-pink-500 text-white rounded-lg text-sm font-semibold shadow hover:from-indigo-700 hover:to-pink-600 transition"
                   >
                     Track Analytics
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 ml-2">
