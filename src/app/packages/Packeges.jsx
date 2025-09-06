@@ -52,7 +52,7 @@ import {
           {packages.map((pkg) => (
             <div
               key={pkg.title}
-              className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl hover:shadow-indigo-200 transition-shadow p-8 flex flex-col border border-indigo-100 relative overflow-hidden group"
+              className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl hover:shadow-indigo-200 transition-shadow p-12 min-h-[480px] flex flex-col border border-indigo-100 relative overflow-hidden group"
             >
               {/* Decorative gradient blob */}
               <div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-indigo-200 via-pink-100 to-white rounded-full opacity-40 group-hover:scale-110 transition-transform z-0" />
@@ -79,7 +79,7 @@ import {
                   <span>some link</span>
                 </li>
               </ul>
-              <div className="mb-4 z-10 relative">
+              <div className=" z-10 relative">
                 <div className="flex items-center gap-2 mb-1">
                   <BarChart2 className="w-4 h-4 text-indigo-600" />
                   <span className="font-medium">Metrics</span>
@@ -92,14 +92,16 @@ import {
                   ))}
                 </div>
               </div>
-              <div className="flex items-center gap-2 mb-4 z-10 relative">
-                <Clock className="w-4 h-4 text-indigo-600" />
-                <span className="text-sm text-gray-700">{pkg.days_duration}</span>
-              </div>
-              <div className="flex items-center gap-2 mb-4 z-10 relative">
-                <BadgeDollarSign className="w-4 h-4 text-indigo-600" />
-                <span className="text-lg font-bold text-indigo-700">Starts at {pkg.price} $</span>
-              </div>
+                <div className="flex flex-col flex-grow z-10 relative">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Clock className="w-4 h-4 text-indigo-600" />
+                    <span className="text-sm text-gray-700">{pkg.days_duration}</span>
+                  </div>
+                  <div className="flex items-center gap-2 mt-auto">
+                    <BadgeDollarSign className="w-4 h-4 text-indigo-600" />
+                    <span className="text-lg font-bold text-indigo-700 pb-2">Starts at {pkg.price} $</span>
+                  </div>
+                </div>
               <button
                 className="mt-auto bg-gradient-to-r from-indigo-600 to-pink-500 text-white rounded-xl py-3 px-4 font-bold shadow-lg hover:from-indigo-700 hover:to-pink-600 transition text-base tracking-wide z-10 relative"
                 onClick={() => {
