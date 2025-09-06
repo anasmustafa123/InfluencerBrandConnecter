@@ -1,13 +1,30 @@
 'use client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 export default function HomePage(props) {
   const router = useRouter();
   const role = 'brand';
-  const { isUser, setIsUser } = useState();
-  useEffect(() => {});
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+  // Dummy user state for demo
+  // const { isUser, setIsUser } = useState();
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    }
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuOpen]);
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-br from-indigo-50 via-white to-pink-50">
       <header className="sticky top-0 z-10 flex w-full flex-col gap-2 bg-white/80 px-4 py-6 shadow-sm backdrop-blur md:flex-row md:items-center md:justify-between md:gap-0 md:px-8">
@@ -17,17 +34,11 @@ export default function HomePage(props) {
         <div className="flex flex-row flex-wrap items-center justify-center gap-1 md:justify-end md:gap-3">
           {props.isUser ? (
             <>
-              <div className="ml-1 flex items-center gap-2 md:ml-2 md:gap-4">
+              <div className="ml-1 flex items-center gap-2 md:ml-2 md:gap-4 relative" ref={menuRef}>
                 <button
-                  className="rounded-full border border-gray-300 bg-white p-1 hover:shadow"
-                  onClick={() => {
-                    if (role === 'brand') {
-                      router.push('/brandprofile');
-                    } else if (role === 'influencer') {
-                      router.push('/influencerprofile');
-                    }
-                  }}
-                  aria-label="Go to Profile"
+                  className="rounded-full border border-gray-300 bg-white p-1 hover:shadow focus:outline-none"
+                  onClick={() => setMenuOpen((open) => !open)}
+                  aria-label="Open profile menu"
                 >
                   <img
                     src="https://randomuser.me/api/portraits/men/32.jpg"
@@ -35,6 +46,42 @@ export default function HomePage(props) {
                     className="h-8 w-8 rounded-full border-2 border-indigo-200 object-cover md:h-10 md:w-10"
                   />
                 </button>
+                {menuOpen && (
+                  <div className="absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-lg border border-gray-100 z-50 py-2 flex flex-col animate-fade-in">
+                    <button
+                      className="w-full px-4 py-2 text-left text-gray-700 hover:bg-indigo-50 font-medium rounded-t-xl"
+                      onClick={() => {
+                        setMenuOpen(false);
+                        if (role === 'brand') {
+                          router.push('/brandprofile');
+                        } else if (role === 'influencer') {
+                          router.push('/influencerprofile');
+                        }
+                      }}
+                    >
+                      Profile
+                    </button>
+                    <button
+                      className="w-full px-4 py-2 text-left text-gray-700 hover:bg-indigo-50 font-medium"
+                      onClick={() => {
+                        setMenuOpen(false);
+                        router.push('/settings');
+                      }}
+                    >
+                      Settings
+                    </button>
+                    <button
+                      className="w-full px-4 py-2 text-left text-red-600 hover:bg-red-50 font-medium rounded-b-xl"
+                      onClick={() => {
+                        setMenuOpen(false);
+                        // Add logout logic here
+                        alert('Logged out!');
+                      }}
+                    >
+                      Log Out
+                    </button>
+                  </div>
+                )}
               </div>
             </>
           ) : (
