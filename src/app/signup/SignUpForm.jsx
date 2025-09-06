@@ -43,9 +43,9 @@ const onSubmit = async (data) => {
     try {
         await createUser(data.name, data.email, data.password, role);   
         if (role === "brand") {
-          router.push("/brandprofile");
+          router.push("/brandsetup");
         } else if (role === "influencer") {
-          router.push("/influencerprofile");
+          router.push("/Setup");
         }
     } catch (error) {
         alert(error.message)
