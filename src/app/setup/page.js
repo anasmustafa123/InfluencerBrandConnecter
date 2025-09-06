@@ -19,7 +19,6 @@ export default function ProfileSetup() {
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
       <aside className="w-64 bg-indigo-500 text-white p-6 flex flex-col justify-between">
         <div>
           <h2 className="text-xl font-bold mb-6">Setup Profile</h2>

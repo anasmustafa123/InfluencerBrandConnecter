@@ -37,11 +37,32 @@ const {
 
 const onSubmit = async (data) => {
     console.log("Sign Up Data:", data, role);
-
-    // TODO: call your API here (fake success for now)
-    // await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate request
     try {
-        await createUser(data.name, data.email, data.password, role);   
+        const user_data = await createUser(data.name, data.email, data.password, role);   
+        const res = await fetch("/api/user/jwt", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userId: user_data[0].id,
+                email: user_data[0].email,
+                userRole: user_data[0].user_type,
+                brand_id: user_data[0].brand_id,
+                influencer_id: user_data[0].influencer_id,
+            }),
+        });
+        const res_data = await res.json();
+        const user_type = user_data[0].user_type
+        if (res_data.success) {
+            if (user_type === "brand") {
+                router.push("/brandprofile");
+            }else if (user_type === "influencer") {
+                router.push("/influencerprofile");
+            }
+        }
+        if (! res_data.success) {
+            alert(res_data.message);
+        }
+        console.log({res_data}); 
         if (role === "brand") {
           router.push("/brandprofile");
         } else if (role === "influencer") {

@@ -5,8 +5,7 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-
+import { useSearchParams } from "next/navigation";
 
 // ✅ Define Yup schema
 const schema = Yup.object().shape({
@@ -20,12 +19,10 @@ password: Yup.string()
 });
 
 export default function LoginForm() {
+    const searchParams = useSearchParams();
+    const role = searchParams.get("role");
+    
     const router = useRouter();
-    useEffect(
-        () => {
-            // console.log({token: getJWTToken()})
-        }, []
-    )
     const {
         register,
         handleSubmit,
@@ -43,8 +40,13 @@ const onSubmit = async (data) => {
     });
 
     const res_data = await res.json();
+    console.log({res_data_anas: res_data})
     if (res_data.success) {
-        router.push("/profile");
+        if (res_data.data.userRole === "brand") {
+            router.push("/brandprofile");
+        }else if (res_data.data.userRole === "influencer") {
+            router.push("/influencerprofile");
+        }
     }
     if (! res_data.success) {
         alert(res_data.message);
