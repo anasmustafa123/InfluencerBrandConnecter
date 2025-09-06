@@ -78,6 +78,7 @@ export default function HomePage(props) {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
                         });
+                        window.location.href = "/home";
                       }}
                     >
                       Log Out
