@@ -34,7 +34,7 @@ export async function POST(req) {
     }
   }catch(err){
     return NextResponse.json(
-      { success: false, data: {user_type: role}, message: "Invalid credentials", "details": err },
+      { success: false, data: {user_type: false}, message: "Invalid credentials", "details": err },
       { status: 401 }
     );
     
