@@ -72,10 +72,12 @@ export default function HomePage(props) {
                     </button>
                     <button
                       className="w-full px-4 py-2 text-left text-red-600 hover:bg-red-50 font-medium rounded-b-xl"
-                      onClick={() => {
+                      onClick={async () => {
                         setMenuOpen(false);
-                        // Add logout logic here
-                        alert('Logged out!');
+                        const res = await fetch("/api/user/logout", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                        });
                       }}
                     >
                       Log Out
