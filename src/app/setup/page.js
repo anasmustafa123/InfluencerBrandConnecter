@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-export default function ProfileSetup() {
+export default function InfluencerSetup() {
   const [step, setStep] = useState(1);
   const router = useRouter();
 
@@ -21,13 +21,13 @@ export default function ProfileSetup() {
     <div className="flex h-screen">
       <aside className="w-64 bg-indigo-500 text-white p-6 flex flex-col justify-between">
         <div>
-          <h2 className="text-xl font-bold mb-6">Setup Profile</h2>
+          <h2 className="text-xl font-bold mb-6">Influencer Setup</h2>
           <ul className="space-y-4">
             <li className={step === 1 ? "font-bold underline" : ""}>
-              User Information
+              Personal Information
             </li>
             <li className={step === 2 ? "font-bold underline" : ""}>
-              Platforms
+              Social Platforms
             </li>
           </ul>
         </div>
@@ -41,53 +41,32 @@ export default function ProfileSetup() {
       <main className="flex-1 bg-white p-8 relative">
         {/* Skip button */}
         <button
-          onClick={() => {
-            if (role === "brand") {
-              router.push("/brandprofile");
-            } else if (role === "influencer") {
-              router.push("/influencerprofile");
-            }
-          }}
+          type="button"
+          onClick={() => router.push("/influencerprofile")}
           className="absolute top-4 right-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 shadow"
         >
           Skip
         </button>
         {step === 1 && (
           <div>
-            <h3 className="text-2xl font-semibold mb-4">User Information</h3>
+            <h3 className="text-2xl font-semibold mb-4">Personal Information</h3>
             <div className="space-y-4">
-              <input
-                className="w-full p-2 border rounded"
-                placeholder="Full Name"
-              />
-              <input
-                className="w-full p-2 border rounded"
-                placeholder="Email"
-              />
-              <input
-                className="w-full p-2 border rounded"
-                placeholder="Bio"
-              />
+              <input className="w-full p-2 border rounded" placeholder="Full Name" />
+              <input className="w-full p-2 border rounded" placeholder="Email" />
+              <input className="w-full p-2 border rounded" placeholder="Bio" />
+              <input className="w-full p-2 border rounded" placeholder="Location" />
             </div>
           </div>
         )}
 
         {step === 2 && (
           <div>
-            <h3 className="text-2xl font-semibold mb-4">Platforms</h3>
+            <h3 className="text-2xl font-semibold mb-4">Social Platforms</h3>
             <div className="space-y-4">
-              <input
-                className="w-full p-2 border rounded"
-                placeholder="Instagram Handle"
-              />
-              <input
-                className="w-full p-2 border rounded"
-                placeholder="TikTok Handle"
-              />
-              <input
-                className="w-full p-2 border rounded"
-                placeholder="Company Website (if brand)"
-              />
+              <input className="w-full p-2 border rounded" placeholder="Instagram Handle" />
+              <input className="w-full p-2 border rounded" placeholder="TikTok Handle" />
+              <input className="w-full p-2 border rounded" placeholder="YouTube Channel" />
+              <input className="w-full p-2 border rounded" placeholder="Other Platform" />
             </div>
           </div>
         )}

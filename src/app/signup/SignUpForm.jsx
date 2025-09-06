@@ -64,9 +64,9 @@ const onSubmit = async (data) => {
         }
         console.log({res_data}); 
         if (role === "brand") {
-          router.push("/brandprofile");
+          router.push("/brandsetup");
         } else if (role === "influencer") {
-          router.push("/influencerprofile");
+          router.push("/Setup");
         }
     } catch (error) {
         alert(error.message)
