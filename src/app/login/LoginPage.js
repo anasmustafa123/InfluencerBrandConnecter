@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
 
 // ✅ Define Yup schema
 const schema = Yup.object().shape({
@@ -19,9 +18,6 @@ password: Yup.string()
 });
 
 export default function LoginForm() {
-    const searchParams = useSearchParams();
-    const role = searchParams.get("role");
-    
     const router = useRouter();
     const {
         register,
