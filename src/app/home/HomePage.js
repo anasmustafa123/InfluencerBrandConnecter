@@ -108,7 +108,13 @@ export default function HomePage(props) {
                 Join as Influencer
               </Link>
               <Link
-                href="/brandinfo"
+                href="/login"
+                className="flex min-w-[120px] justify-center items-center gap-1 rounded-full border-0 bg-gradient-to-r from-gray-700 to-indigo-500 px-3 py-1.5 text-sm font-semibold whitespace-nowrap text-white shadow-md transition hover:from-gray-800 hover:to-indigo-600 focus:ring-2 focus:ring-indigo-300 focus:outline-none md:min-w-[unset] md:gap-2 md:px-5 md:py-2 md:text-base"
+              >
+                Log In
+              </Link>
+              <Link
+                href="/login"
                 className="flex min-w-[120px] items-center gap-1 rounded-full border-0 bg-gradient-to-r from-pink-500 to-pink-400 px-3 py-1.5 text-sm font-semibold whitespace-nowrap text-white shadow-md transition hover:from-pink-600 hover:to-pink-500 focus:ring-2 focus:ring-pink-300 focus:outline-none md:min-w-[unset] md:gap-2 md:px-5 md:py-2 md:text-base"
               >
                 <svg
