@@ -8,26 +8,11 @@ import {
     Clock,
     BadgeDollarSign,
   } from "lucide-react";
-  import { useEffect } from 'react';
-  import { getAllPackages } from '@/lib/package';
   
   export default function Packages({packages}) {
     const router = useRouter();
-    console.log({packages})
-    useEffect(
-      () => {
-        async function fetch_data() {
-          let all_packages = await getAllPackages(false);
-          console.log({all_packages})
-          return all_packages
-        } 
-        fetch_data(false);
-      }, []
-    )
-    
     return (
       <div className="py-10 px-4 max-w-7xl mx-auto relative min-h-screen bg-white">
-        {/* Back Button Top Left */}
         <div className="fixed top-6 left-6 z-50">
           <button
             onClick={() => router.back()}
@@ -39,7 +24,6 @@ import {
             </svg>
           </button>
         </div>
-        {/* Home Button Top Right */}
         <div className="fixed top-6 right-6 z-50">
           <a href="/home" className="inline-flex items-center p-2 rounded-full bg-white border border-gray-300 hover:bg-gray-100 shadow" aria-label="Go to Home">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-indigo-600">
@@ -54,7 +38,6 @@ import {
               key={pkg.title}
               className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl hover:shadow-indigo-200 transition-shadow p-12 min-h-[480px] flex flex-col border border-indigo-100 relative overflow-hidden group"
             >
-              {/* Decorative gradient blob */}
               <div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-indigo-200 via-pink-100 to-white rounded-full opacity-40 group-hover:scale-110 transition-transform z-0" />
               <div className="flex items-center justify-between mb-2 z-10 relative">
                 <h2 className="text-2xl font-bold text-indigo-700">{pkg.title}</h2>
@@ -105,12 +88,7 @@ import {
               <button
                 className="mt-auto bg-gradient-to-r from-indigo-600 to-pink-500 text-white rounded-xl py-3 px-4 font-bold shadow-lg hover:from-indigo-700 hover:to-pink-600 transition text-base tracking-wide z-10 relative"
                 onClick={() => {
-                  // Dummy influencers for demonstration; replace with real selection logic if needed
-                  const influencers = [
-                    { id: 1, name: "Sarah Johnson", profilePic: "https://randomuser.me/api/portraits/women/1.jpg", platform: "Instagram", milestones: ["Contacted", "Content Sent", "Published"], currentMilestone: 1 },
-                    { id: 2, name: "Mike Smith", profilePic: "https://randomuser.me/api/portraits/men/1.jpg", platform: "TikTok", milestones: ["Contacted", "Content Sent", "Published"], currentMilestone: 0 },
-                  ];
-                  router.push(`/packagesetup?pkg=${encodeURIComponent(JSON.stringify(pkg))}&influencers=${encodeURIComponent(JSON.stringify(influencers))}`);
+                  router.push(`/packagesetup/${pkg.id}`);
                 }}
               >
                 Choose Package

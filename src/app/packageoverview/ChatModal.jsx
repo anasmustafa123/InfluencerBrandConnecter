@@ -15,7 +15,6 @@ export default function ChatModal({ open, onClose, influencer }) {
         </button>
         <h3 className="text-lg font-bold mb-4">Chat with {influencer.name}</h3>
         <div className="h-48 bg-gray-50 rounded p-4 mb-4 overflow-y-auto flex flex-col gap-2">
-          {/* Example chat messages */}
           <div className="self-start bg-indigo-100 px-3 py-2 rounded-lg max-w-xs">Hi, can you send the draft?</div>
           <div className="self-end bg-gray-200 px-3 py-2 rounded-lg max-w-xs">Sure! I'll send it by tomorrow.</div>
         </div>

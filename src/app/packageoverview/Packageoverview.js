@@ -14,20 +14,12 @@ export default function PackageOverview({ pkg, influencers }) {
   const [chatUser, setChatUser] = useState(null);
   const [analyticsOpen, setAnalyticsOpen] = useState(false);
   const [breakdownOpen, setBreakdownOpen] = useState(false);
-
-  // Dummy influencers
-  const dummyInfluencers = [
-    { id: 1, name: "Sarah Johnson", image: "https://randomuser.me/api/portraits/women/1.jpg" },
-    { id: 2, name: "Mike Smith", image: "https://randomuser.me/api/portraits/men/1.jpg" },
-  ];
-
-  // Dummy analytics data
+  console.log({realpackage: pkg});
   const analytics = [
     { id: 1, type: "Instagram Post", reach: 12000, views: 8000, conversions: 120 },
     { id: 2, type: "TikTok Video", reach: 18000, views: 15000, conversions: 200 },
   ];
 
-  // Dummy content with influencerId
   const content = [
     {
       id: 1,
@@ -111,7 +103,7 @@ export default function PackageOverview({ pkg, influencers }) {
               {pkg.inf_num}
             </p>
             <p className="text-gray-600 mb-2">
-              <strong>Estimated Reach:</strong> 120K
+              <strong>Estimated Reach:</strong> 120K - 150K
             </p>
             <p className="text-gray-600 mb-2">
               <strong>Views:</strong> 480K
@@ -144,7 +136,7 @@ export default function PackageOverview({ pkg, influencers }) {
         <div className="bg-white rounded-xl shadow-lg p-6">
           <h2 className="text-xl font-bold mb-6">Influencer Progress</h2>
           <div className="space-y-4">
-            {influencers.map((inf) => (
+            {influencers.slice(0, pkg.inf_num).map((inf) => (
               <div
                 key={inf.id}
                 className="flex items-center justify-between border rounded-lg p-4"
