@@ -115,7 +115,7 @@ export default function HomePage(props) {
                 Log In
               </Link>
               <Link
-                href="/login"
+                href="/brandinfo"
                 className="flex min-w-[120px] items-center gap-1 rounded-full border-0 bg-gradient-to-r from-pink-500 to-pink-400 px-3 py-1.5 text-sm font-semibold whitespace-nowrap text-white shadow-md transition hover:from-pink-600 hover:to-pink-500 focus:ring-2 focus:ring-pink-300 focus:outline-none md:min-w-[unset] md:gap-2 md:px-5 md:py-2 md:text-base"
               >
                 <svg
