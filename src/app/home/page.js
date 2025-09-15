@@ -30,6 +30,6 @@ export default async function Page() {
   }
 
   return (
-    (isUser ? <HomePage isUser={isUser ? true : false} userRole={payload.userRole} /> : <HomePage isUser={false} userData={null} />)
+    (isUser ? <HomePage isUser={isUser ? true : false} userRole={payload.userRole} brand_id={payload.brand_id} influencer_id={payload.influencer_id}/> : <HomePage isUser={false} userData={null} />)
   );
 }

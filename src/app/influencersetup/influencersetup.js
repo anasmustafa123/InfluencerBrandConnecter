@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { AddInfluencerPlatforms } from "@/lib/influencer_platforms";
 
 export default function InfluencerSetupPage(props) {
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
@@ -22,11 +23,12 @@ export default function InfluencerSetupPage(props) {
     setSelectedPlatforms(selectedPlatforms.filter(p => p.name !== key));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Influencer Data:", selectedPlatforms);
     for (let i = 0; i < selectedPlatforms.length; i++) {
-      
+      const res = await AddInfluencerPlatforms(props.influencer_id, selectedPlatforms[i].name, selectedPlatforms[i].username);
+      console.log({res});
     }
     router.push("/influencerprofile");
     // Submit to backend here
@@ -35,7 +37,6 @@ export default function InfluencerSetupPage(props) {
   const handleSkip = () => {
     console.log("Skipped setup");
     router.push("/influencerprofile");
-    // Redirect or mark setup as skipped in backend
   };
 
   return (
