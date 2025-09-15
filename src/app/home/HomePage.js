@@ -5,11 +5,10 @@ import { useEffect, useState, useRef } from 'react';
 
 export default function HomePage(props) {
   const router = useRouter();
-  const role = 'brand';
+  const role = props.userRole;
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
   // Dummy user state for demo
-  // const { isUser, setIsUser } = useState();
   useEffect(() => {
     function handleClickOutside(e) {
       if (menuRef.current && !menuRef.current.contains(e.target)) {

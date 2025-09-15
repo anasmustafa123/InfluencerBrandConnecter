@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { createBrand } from "@/lib/brands";
 
 export default function brandsetup() {
   const [step, setStep] = useState(1);
@@ -9,11 +10,11 @@ export default function brandsetup() {
 
   const handleSetupComplete = () => {
     router.push("/brandprofile");
+    createBrand();
   };
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
       <aside className="w-64 bg-pink-500 text-white p-6 flex flex-col justify-between">
         <div>
           <h2 className="text-xl font-bold mb-6">Brand Setup</h2>
@@ -28,12 +29,11 @@ export default function brandsetup() {
         </div>
       </aside>
 
-      {/* Main content */}
       <main className="flex-1 bg-white p-8 relative">
-        {/* Skip button */}
         <button
-          onClick={() => {
+          onClick={async() => { 
             router.push("/brandprofile");
+            createBrand();
           }}
           className="absolute top-4 right-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 shadow"
         >
