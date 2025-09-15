@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createUser } from "@/lib/user";
+import { createInfluencer } from "@/lib/influencer";
+import { createBrand } from "@/lib/brands";
 
 const schema = Yup.object().shape({
 name: Yup.string().required("Name is required"),
@@ -36,9 +38,21 @@ const {
 });
 
 const onSubmit = async (data) => {
-    console.log("Sign Up Data:", data, role);
     try {
-        const user_data = await createUser(data.name, data.email, data.password, role);   
+        let user_data = {};
+        if (role === "brand") {
+            const brand = await createBrand();
+            console.log({brand});
+            const brand_id = brand.success ? brand.data[0].id : null;
+            
+            user_data = await createUser(data.name, data.email, data.password, role, brand_id, null);  
+        }else if (role === "influencer") {
+            const influencer = await createInfluencer();
+            const influencer_id = influencer.success ? influencer.data[0].id : null; 
+            console.log({influencer});
+            user_data = await createUser(data.name, data.email, data.password, role, null, influencer_id);
+        }
+        console.log({user_data});
         const res = await fetch("/api/user/jwt", {
             method: "POST",
             headers: { "Content-Type": "application/json" },

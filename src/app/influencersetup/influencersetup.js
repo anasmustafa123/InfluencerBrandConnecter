@@ -1,14 +1,6 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createInfluencer } from "@/lib/influencer";
-
-const availablePlatforms = [
-  { name: "Instagram", key: "instagram" },
-  { name: "TikTok", key: "tiktok" },
-  { name: "YouTube", key: "youtube" },
-  { name: "Facebook", key: "facebook" },
-];
 
 export default function InfluencerSetupPage(props) {
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
@@ -33,6 +25,10 @@ export default function InfluencerSetupPage(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Influencer Data:", selectedPlatforms);
+    for (let i = 0; i < selectedPlatforms.length; i++) {
+      
+    }
+    router.push("/influencerprofile");
     // Submit to backend here
   };
 
@@ -89,7 +85,7 @@ export default function InfluencerSetupPage(props) {
                   Username:
                   <input
                     type="text"
-                    value={platform.display_name}
+                    value={platform.username}
                     onChange={(e) => handleUsernameChange(platform.name, e.target.value)}
                     className="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
                     placeholder={`Enter your ${platform.name} username`}

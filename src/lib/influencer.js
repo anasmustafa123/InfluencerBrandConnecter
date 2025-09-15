@@ -6,8 +6,7 @@ export async function createInfluencer(name, email) {
         .insert([{ name, email }])
         .select();
 
-    if (error) throw error;
-    return data;
+    return {data: data, success: error ? false : true, message: error ? error.message : "Influencer created successfully"}
 }
 
 export async function getInfluencers() {

@@ -13,6 +13,5 @@ export async function createBrand(name, email) {
         .insert([payload])
         .select();
 
-    if (error) throw error;
-    return data;
+    return {data: data, success: error ? false : true, message: error ? error.message : "Brand created successfully"};
 }

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createBrand } from "@/lib/brands";
 
 export default function brandsetup() {
   const [step, setStep] = useState(1);
@@ -10,7 +9,6 @@ export default function brandsetup() {
 
   const handleSetupComplete = () => {
     router.push("/brandprofile");
-    createBrand();
   };
 
   return (
@@ -33,7 +31,6 @@ export default function brandsetup() {
         <button
           onClick={async() => { 
             router.push("/brandprofile");
-            createBrand();
           }}
           className="absolute top-4 right-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 shadow"
         >
