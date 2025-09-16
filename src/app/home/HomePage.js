@@ -161,13 +161,13 @@ export default function HomePage(props) {
         <div className="mt-8 flex flex-col justify-center gap-4 md:flex-row">
           <Link
             href="/influencerfilter"
-            className="rounded-full bg-gradient-to-r from-indigo-600 to-indigo-400 px-8 py-4 text-lg font-bold tracking-wide text-white shadow-lg transition hover:from-indigo-700 hover:to-indigo-500"
+            className={`rounded-full ${props.userRole === 'influencer' ? 'hidden' : ''} bg-gradient-to-r from-indigo-600 to-indigo-400 px-8 py-4 text-lg font-bold tracking-wide text-white shadow-lg transition hover:from-indigo-700 hover:to-indigo-500`}
           >
             Find Influencers
           </Link>
           <Link
             href="/packages"
-            className="rounded-full bg-gradient-to-r from-pink-600 to-pink-400 px-8 py-4 text-lg font-bold tracking-wide text-white shadow-lg transition hover:from-pink-700 hover:to-pink-500"
+            className={`rounded-full ${props.userRole === 'influencer' ? 'hidden' : ''} bg-gradient-to-r from-pink-600 to-pink-400 px-8 py-4 text-lg font-bold tracking-wide text-white shadow-lg transition hover:from-pink-700 hover:to-pink-500`}
           >
             Marketing Packages
           </Link>

@@ -80,7 +80,7 @@ const onSubmit = async (data) => {
         if (role === "brand") {
           router.push("/brandsetup");
         } else if (role === "influencer") {
-          router.push("/Setup");
+          router.push("/influencersetup");
         }
     } catch (error) {
         alert(error.message)
