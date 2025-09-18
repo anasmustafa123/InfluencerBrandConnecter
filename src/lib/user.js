@@ -7,7 +7,7 @@ export async function createUser(name, email, password, user_type, brand_id, inf
         .select();
 
     if (error) throw error;
-    return data;
+    return {data: data, success: error ? false : true, message: error ? error.message : "User created successfully"};
 }
 
 export async function authUser(email, password) {

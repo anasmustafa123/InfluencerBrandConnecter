@@ -9,6 +9,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { createUser } from "@/lib/user";
 import { createInfluencer } from "@/lib/influencer";
 import { createBrand } from "@/lib/brands";
+import { addInfProfile, getInfProfile } from "@/lib/profils/inf_profile";
+import { addBrandProfile } from "@/lib/profils/brand_profile";
 
 const schema = Yup.object().shape({
 name: Yup.string().required("Name is required"),
@@ -44,28 +46,32 @@ const onSubmit = async (data) => {
             const brand = await createBrand();
             console.log({brand});
             const brand_id = brand.success ? brand.data[0].id : null;
-            
-            user_data = await createUser(data.name, data.email, data.password, role, brand_id, null);  
+            if (brand.success) {
+                await addBrandProfile(brand_id);
+            }
+            user_data = await createUser(data.name, data.email, data.password, role, brand_id, null);
         }else if (role === "influencer") {
             const influencer = await createInfluencer();
             const influencer_id = influencer.success ? influencer.data[0].id : null; 
+            if (influencer.success) {
+                await addInfProfile(influencer_id);
+            }
             console.log({influencer});
             user_data = await createUser(data.name, data.email, data.password, role, null, influencer_id);
         }
-        console.log({user_data});
         const res = await fetch("/api/user/jwt", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                userId: user_data[0].id,
-                email: user_data[0].email,
-                userRole: user_data[0].user_type,
-                brand_id: user_data[0].brand_id,
-                influencer_id: user_data[0].influencer_id,
+                userId: user_data.data[0].id,
+                email: user_data.data[0].email,
+                userRole: user_data.data[0].user_type,
+                brand_id: user_data.data[0].brand_id,
+                influencer_id: user_data.data[0].influencer_id,
             }),
         });
         const res_data = await res.json();
-        const user_type = user_data[0].user_type
+        const user_type = user_data.data[0].user_type
         if (res_data.success) {
             if (user_type === "brand") {
                 router.push("/brandprofile");
