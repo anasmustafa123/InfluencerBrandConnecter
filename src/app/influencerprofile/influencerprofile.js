@@ -8,11 +8,42 @@ import { userAgent } from "next/server";
 import { useState } from "react";
 
 export default function InfluencerProfilePage(props) {
+  // Delete service handler
+  const handleDeleteService = (id) => {
+    setServices(prev => prev.filter(s => s.id !== id));
+  };
   const router = useRouter();
   const [avatar, setAvatar] = useState("/profile-pic.png"); // default placeholder
   const [preview, setPreview] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [showConfirm, setShowConfirm] = useState(false);
+  // Add service popup state and handler
+  const [showAddService, setShowAddService] = useState(false);
+  const [newService, setNewService] = useState({ title: "", desc: "", price: "", icon: "" });
+  const [services, setServices] = useState([
+    { id: 1, icon: "📷", title: "3 Instagram Posts", desc: "3 Feed posts + 2 story mentions", price: "$450" },
+    { id: 2, icon: "🎥", title: "1 Promo Video", desc: "30–60s short for Reels/TikTok", price: "$700" },
+    { id: 3, icon: "📖", title: "Story Pack", desc: "5 Stories with swipe-up link", price: "$180" },
+    { id: 4, icon: "🧾", title: "Sponsored Article", desc: "Blog post + social share", price: "$350" },
+  ]);
+  function handleAddService(e) {
+    e.preventDefault();
+    // Add service to local state for display
+      setServices(prev => [
+        ...prev,
+        {
+          id: prev.length ? prev[prev.length - 1].id + 1 : 1,
+          ...newService,
+          delivery: `${newService.deliveryMin}-${newService.deliveryMax} days`,
+          desc: `${newService.descNumber} ${newService.descType}`,
+          price: `${newService.priceNumber} ${newService.priceCurrency}`
+        }
+      ]);
+    // TODO: Add service to backend or local state
+    alert(`Service added: ${newService.title}`);
+  setShowAddService(false);
+  setNewService({ title: "", icon: "", deliveryMin: 2, deliveryMax: 7, descNumber: 1, descType: "", priceNumber: "", priceCurrency: "dollar" });
+  }
 
   console.log(props.profile_data)
   let platforms =  props && props.profile_data && props.profile_data.influencers && props.profile_data.influencers.influencer_platforms ? props.profile_data.influencers.influencer_platforms : []
@@ -31,12 +62,6 @@ export default function InfluencerProfilePage(props) {
     sidebar_about: props.profile_data.sidebar_about
   };
 
-  const services = [
-    { id: 1, icon: "📷", title: "3 Instagram Posts", desc: "3 Feed posts + 2 story mentions", price: "$450" },
-    { id: 2, icon: "🎥", title: "1 Promo Video", desc: "30–60s short for Reels/TikTok", price: "$700" },
-    { id: 3, icon: "📖", title: "Story Pack", desc: "5 Stories with swipe-up link", price: "$180" },
-    { id: 4, icon: "🧾", title: "Sponsored Article", desc: "Blog post + social share", price: "$350" },
-  ];
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -100,10 +125,22 @@ export default function InfluencerProfilePage(props) {
                   style={{ objectFit: "cover" }}
                 />
               </div>
-              <label className="mt-3 cursor-pointer text-sm text-indigo-600 font-medium hover:underline">
-                Change Photo
-                <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
-              </label>
+              <div className="mt-3 flex items-center gap-3">
+                <label className="cursor-pointer text-sm text-indigo-600 font-medium hover:underline">
+                  Change Photo
+                  <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+                </label>
+                </div>
+                <div>
+                {props.userRole === "influencer" && (
+                  <button
+                    className="px-4 py-1 bg-gradient-to-r from-indigo-500 to-pink-500 text-white rounded-lg text-xs font-semibold shadow hover:from-indigo-600 hover:to-pink-600 transition"
+                    onClick={() => setEditing(true)}
+                  >
+                    Edit Profile
+                  </button>
+                )}
+              </div>
             </div>
             {showConfirm && selectedFile && (
               <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
@@ -231,11 +268,144 @@ export default function InfluencerProfilePage(props) {
           <div className="lg:col-span-2">
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-2xl font-bold text-indigo-700 tracking-tight">Services Offered</h2>
-              <div className="text-sm text-gray-500 font-medium">Prices & delivery</div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-500 font-medium">Prices & delivery</span>
+                {props.userRole === "influencer" && (
+                  <button
+                    className="p-1 rounded-full bg-indigo-100 hover:bg-indigo-200 text-indigo-600 shadow"
+                    onClick={() => setShowAddService(true)}
+                    aria-label="Add Service"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                  </button>
+                )}
+              </div>
             </div>
+            {showAddService && (
+              <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+                <form onSubmit={handleAddService} className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md flex flex-col gap-4">
+                  <h3 className="text-xl font-bold text-indigo-700 mb-2">Add New Service</h3>
+                    <input
+                      type="text"
+                      placeholder="Service Title"
+                      value={newService.title}
+                      onChange={e => setNewService(s => ({ ...s, title: e.target.value }))}
+                      className="border rounded px-3 py-2"
+                      required
+                    />
+                    <select
+                      value={newService.icon}
+                      onChange={e => setNewService(s => ({ ...s, icon: e.target.value }))}
+                      className="border rounded px-3 py-2"
+                      required
+                    >
+                      <option value="">Select Icon</option>
+                      <option value="📷">Camera</option>
+                      <option value="🎥">Video</option>
+                      <option value="📖">Book</option>
+                      <option value="🧾">Article</option>
+                      <option value="📝">Note</option>
+                    </select>
+                    <div className="flex gap-2">
+                      <label className="flex flex-col text-sm">
+                        Delivery Min
+                        <input
+                          type="number"
+                          min={1}
+                          max={30}
+                          value={newService.deliveryMin || 2}
+                          onChange={e => setNewService(s => ({ ...s, deliveryMin: Number(e.target.value) }))}
+                          className="border rounded px-2 py-1"
+                          required
+                        />
+                      </label>
+                      <label className="flex flex-col text-sm">
+                        Delivery Max
+                        <input
+                          type="number"
+                          min={1}
+                          max={30}
+                          value={newService.deliveryMax || 7}
+                          onChange={e => setNewService(s => ({ ...s, deliveryMax: Number(e.target.value) }))}
+                          className="border rounded px-2 py-1"
+                          required
+                        />
+                      </label>
+                    </div>
+                    <div className="flex gap-2">
+                      <label className="flex flex-col text-sm">
+                        Number
+                        <select
+                          value={newService.descNumber || 1}
+                          onChange={e => setNewService(s => ({ ...s, descNumber: Number(e.target.value) }))}
+                          className="border rounded px-2 py-1"
+                          required
+                        >
+                          {[...Array(10)].map((_, i) => (
+                            <option key={i+1} value={i+1}>{i+1}</option>
+                          ))}
+                        </select>
+                      </label>
+                      <label className="flex flex-col text-sm">
+                        Type
+                        <input
+                          type="text"
+                          placeholder="Type (e.g. posts, reels, videos)"
+                          value={newService.descType || ""}
+                          onChange={e => setNewService(s => ({ ...s, descType: e.target.value }))}
+                          className="border rounded px-2 py-1"
+                          required
+                        />
+                      </label>
+                    </div>
+                    <div className="flex gap-2">
+                      <label className="flex flex-col text-sm flex-1">
+                        Price
+                        <input
+                          type="number"
+                          min={0}
+                          placeholder="Amount"
+                          value={newService.priceNumber || ""}
+                          onChange={e => setNewService(s => ({ ...s, priceNumber: e.target.value }))}
+                          className="border rounded px-2 py-1"
+                          required
+                        />
+                      </label>
+                      <label className="flex flex-col text-sm w-32">
+                        Currency
+                        <select
+                          value={newService.priceCurrency || "dollar"}
+                          onChange={e => setNewService(s => ({ ...s, priceCurrency: e.target.value }))}
+                          className="border rounded px-2 py-1"
+                          required
+                        >
+                          <option value="dollar">USD </option>
+                          <option value="dirham">AED </option>
+                          <option value="egyptian pound">EGP</option>
+                        </select>
+                      </label>
+                    </div>
+                  <div className="flex gap-3 mt-2">
+                    <button type="submit" className="px-4 py-2 bg-indigo-500 text-white rounded-lg font-semibold hover:bg-indigo-600">Add</button>
+                    <button type="button" className="px-4 py-2 border rounded-lg font-medium hover:bg-gray-100" onClick={() => setShowAddService(false)}>Cancel</button>
+                  </div>
+                </form>
+              </div>
+            )}
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-6">
               {services.map((s) => (
-                <div key={s.id} className="bg-white/70 backdrop-blur-lg rounded-2xl border border-indigo-100 p-6 shadow-lg hover:shadow-xl transition flex flex-col">
+                <div key={s.id} className="relative bg-white/70 backdrop-blur-lg rounded-2xl border border-indigo-100 p-6 shadow-lg hover:shadow-xl transition flex flex-col">
+                  {/* Delete button */}
+                  <button
+                    className="absolute top-2 right-2 w-5 h-5 flex items-center justify-center rounded-full text-pink-400 text-base font-bold transition-colors duration-150 hover:bg-pink-100 hover:text-pink-600 focus:outline-none"
+                    onClick={() => handleDeleteService(s.id)}
+                    aria-label="Delete Service"
+                    style={{ boxShadow: 'none', border: 'none', background: 'none' }}
+                  >
+                    ×
+                  </button>
                   <div className="flex items-start gap-4">
                     <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-indigo-100 to-pink-100 flex items-center justify-center text-3xl shadow">
                       <span>{s.icon}</span>
@@ -249,7 +419,7 @@ export default function InfluencerProfilePage(props) {
                     </div>
                   </div>
                   <div className="mt-6 flex items-center justify-between">
-                    <div className="text-xs text-gray-500">Delivery: 3–7 days</div>
+                    <div className="text-xs text-gray-500">Delivery: {s.delivery || "3–7 days"}</div>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleOrder(s)}
