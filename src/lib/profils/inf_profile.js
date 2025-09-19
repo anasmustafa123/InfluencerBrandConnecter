@@ -10,6 +10,7 @@ export async function addInfProfile (influencer_id) {
 export async function getInfProfile (influencer_id) {
     const {data, error} = await supabase.from("influencer_profile").
     select(`
+        *,
         influencers: influencer_id (
             influencer_platforms (
             platforms (name, display_name, icon),
@@ -19,5 +20,17 @@ export async function getInfProfile (influencer_id) {
     )
     `).
     eq("influencer_id", influencer_id);
-    return {data: data, success: error ? false : true, message: error ? error.message : "Profile added successfully"}
+    return {data: data, success: error ? false : true, message: error ? error.message : "Profile found successfully"}
 }
+
+
+export async function updateProfileAvatar(userId, avatarUrl) {
+    const { data, error } = await supabase
+      .from('influencer_profile')
+      .update({ avatar_url: avatarUrl })
+      .eq('id', userId);
+  
+    if (error) throw error;
+    return data;
+  }
+  
