@@ -1,6 +1,6 @@
 "use client";
 
-import { addNewInfluencerServise } from "@/lib/influencer_servise";
+import { addNewInfluencerServise, addNewInfluencerServiseLines } from "@/lib/influencer_servise";
 import { useState } from "react";
 
 
@@ -28,14 +28,22 @@ export function NewServise({setNewService, newService, setShowAddService, curren
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
             <form onSubmit= {async (e) => {
                 e.preventDefault();
+                console.log("submitting", newService);
                 const res_ofadd = await add_service_to_db(newService, influencer_id, currencies);
-                setShowAddService(false);
                 if (! res_ofadd.success) {
-                    alert(res_ofadd.error);
+                    console.log(res_ofadd.message)
+                    alert(res_ofadd.message);
                     return;
-                }else{
-                    alert(`Service added: ${newService.title}`);
                 }
+                const linesadded = await addNewInfluencerServiseLines(newService.influencer_servise_line.map((s)=> ({ influencer_service_id: res_ofadd.data.id, name: s.name, count: s.count })));
+                setShowAddService(false);
+                console.log({linesadded})
+                if (! linesadded.success) {
+                    console.log(linesadded.message)
+                    alert('Something went wrong');
+                    return;
+                }
+                alert(`Service added: ${newService.title}`);
             }}
              className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md flex flex-col gap-4">
                 <h3 className="text-xl font-bold text-indigo-700 mb-2">Add New Service</h3>
@@ -87,49 +95,78 @@ export function NewServise({setNewService, newService, setShowAddService, curren
                     </label>
                 </div>
                 {[...Array(service_description_count)].map((_, i) => (
-                    <div className="flex gap-2">
-                    <label className="flex flex-col text-sm">
-                    Number
+                    <div key={i} className="flex gap-2 items-end">
+                        <label className="flex flex-col text-sm">
+                        Number
                         <select
-                            value={newService.influencer_servise_line.length > i ? newService.influencer_servise_line[i].count || 1 : 1}
-                            onChange={e => setNewService(s => {
-                                const old_arr = newService.influencer_servise_line || [];
-                                if (old_arr.length > i){
-                                    old_arr[i] = {...old_arr[i], count: Number(e.target.value)}
-                                }else{
-                                    old_arr.push({count: Number(e.target.value)})
-                                }
-                                return{ ...s, influencer_servise_line: old_arr }
-                            })}
+                            value={newService.influencer_servise_line?.[i]?.count || 1}
+                            onChange={e =>
+                            setNewService(s => {
+                                const old_arr = [...(s.influencer_servise_line || [])];
+                                old_arr[i] = { ...old_arr[i], count: Number(e.target.value) };
+                                return { ...s, influencer_servise_line: old_arr };
+                            })
+                            }
                             className="border rounded px-2 py-1"
                             required
                         >
-                            {[...Array(10)].map((_, i) => (
-                            <option key={i+1} value={i+1}>{i+1}</option>
+                            {[...Array(10)].map((_, n) => (
+                            <option key={n + 1} value={n + 1}>
+                                {n + 1}
+                            </option>
                             ))}
                         </select>
-                    </label>
-                    <label className="flex flex-col text-sm">
-                    Type
-                    <input
-                        type="text"
-                        placeholder="Type (e.g. posts, reels, videos)"
-                        value={newService.influencer_servise_line.length > i ? newService.influencer_servise_line[i].name || "" : ""}
-                        onChange={e => setNewService(s => {
-                            const old_arr = newService.influencer_servise_line || [];
-                            if (old_arr.length > i){
-                                old_arr[i] = {...old_arr[i], name: e.target.value}
-                            }else{
-                                old_arr.push({name: e.target.value})
+                        </label>
+
+                        <label className="flex flex-col text-sm">
+                        Type
+                        <input
+                            type="text"
+                            placeholder="Type (e.g. posts, reels, videos)"
+                            value={newService.influencer_servise_line?.[i]?.name || ""}
+                            onChange={e =>
+                            setNewService(s => {
+                                const old_arr = [...(s.influencer_servise_line || [])];
+                                old_arr[i] = { ...old_arr[i], name: e.target.value };
+                                return { ...s, influencer_servise_line: old_arr };
+                            })
                             }
-                            return{ ...s, influencer_servise_line: old_arr }
-                        })}
-                        className="border rounded px-2 py-1"
-                        required
-                    />
-                    </label>
-                </div>
-                ))}
+                            className="border rounded px-2 py-1"
+                            required
+                        />
+                        </label>
+                        {/* Add button */}
+                    <button
+                        type="button"
+                        onClick={() => {
+                            set_description_count(c => c + 1)
+                        }}
+                        className={`${service_description_count-1 != i ? 'hidden' : ''} mt-2 px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600`}
+                    >
+                    + 
+                    </button>
+                        {/* Delete button for all lines except the first */}
+                        {i > 0 && (
+                        <button
+                            type="button"
+                            onClick={() => {
+                            set_description_count(c => c - 1);
+                            setNewService(s => {
+                                const old_arr = [...(s.influencer_servise_line || [])];
+                                old_arr.splice(i, 1);
+                                return { ...s, influencer_servise_line: old_arr };
+                            });
+                            }}
+                            className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                        >
+                            ✕
+                        </button>
+                        )}
+                    </div>
+                    ))}
+
+                    
+
                 
                 <div className="flex gap-2">
                     <label className="flex flex-col text-sm flex-1">
