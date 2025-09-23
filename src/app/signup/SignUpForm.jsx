@@ -44,7 +44,7 @@ const onSubmit = async (data) => {
         let user_data = {};
         if (role === "brand") {
             const brand = await createBrand();
-            console.log({brand});
+            // console.log({brand});
             const brand_id = brand.success ? brand.data[0].id : null;
             if (brand.success) {
                 await addBrandProfile(brand_id);
@@ -56,7 +56,7 @@ const onSubmit = async (data) => {
             if (influencer.success) {
                 await addInfProfile(influencer_id);
             }
-            console.log({influencer});
+            // console.log({influencer});
             user_data = await createUser(data.name, data.email, data.password, role, null, influencer_id);
         }
         const res = await fetch("/api/user/jwt", {

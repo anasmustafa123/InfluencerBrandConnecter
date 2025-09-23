@@ -36,7 +36,7 @@ const onSubmit = async (data) => {
     });
 
     const res_data = await res.json();
-    console.log({res_data_anas: res_data})
+    // console.log({res_data_anas: res_data})
     if (res_data.success) {
         if (res_data.data.userRole === "brand") {
             router.push("/brandprofile");
@@ -47,7 +47,7 @@ const onSubmit = async (data) => {
     if (! res_data.success) {
         alert(res_data.message);
     }
-    console.log({res_data}); 
+    // console.log({res_data}); 
   };
 
 return (

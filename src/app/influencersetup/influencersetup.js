@@ -25,10 +25,10 @@ export default function InfluencerSetupPage(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Influencer Data:", selectedPlatforms);
+    // console.log("Influencer Data:", selectedPlatforms);
     for (let i = 0; i < selectedPlatforms.length; i++) {
       const res = await AddInfluencerPlatforms(props.influencer_id, selectedPlatforms[i].name, selectedPlatforms[i].username);
-      console.log({res});
+      // console.log({res});
     }
     router.push("/influencerprofile");
     // Submit to backend here

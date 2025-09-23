@@ -14,7 +14,7 @@ export default function PackageOverview({ pkg, influencers }) {
   const [chatUser, setChatUser] = useState(null);
   const [analyticsOpen, setAnalyticsOpen] = useState(false);
   const [breakdownOpen, setBreakdownOpen] = useState(false);
-  console.log({realpackage: pkg});
+  // console.log({realpackage: pkg});
   const analytics = [
     { id: 1, type: "Instagram Post", reach: 12000, views: 8000, conversions: 120 },
     { id: 2, type: "TikTok Video", reach: 18000, views: 15000, conversions: 200 },
