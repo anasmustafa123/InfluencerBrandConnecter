@@ -14,6 +14,9 @@ export default function InfluencerProfilePage(props) {
   const handleDeleteService = (id) => {
     setServices(prev => prev.filter(s => s.id !== id));
   };
+
+  
+
   const router = useRouter();
   const [avatar, setAvatar] = useState("/profile-pic.png"); 
   const [preview, setPreview] = useState(null);
@@ -22,22 +25,24 @@ export default function InfluencerProfilePage(props) {
   const [showAddService, setShowAddService] = useState(false);
   const [newService, setNewService] = useState({ title: "", icon: "", delivery_from: 2, delivery_to: 7, descNumber: 1, descType: "", price: 0, currency: {icon:"$", abbreviation: "USD", name: "dollar"},influencer_servise_line: []});
   const [influencer_servises, set_infeluencer_servises] = useState(props.influencer_servises);
-
+  const [isEditing, setIsEditing] = useState(false);
+  const [profileData, setProfileData] = useState(() => {
   let platforms =  props && props.profile_data && props.profile_data.influencers && props.profile_data.influencers.influencer_platforms ? props.profile_data.influencers.influencer_platforms : []
   platforms = platforms.map((platform) => {
     return {name: platform.platforms.display_name, url: platform.url, badge: platform.platforms.icon}
-  })
+  });
+    return { 
+      name: props.profile_data.name,
+      handle: props.profile_data.handle,
+      bio: props.profile_data.bio,
+      followers: "120K",
+      avgEngagement: "4.2%",
+      platforms,
+      sidebar_about: props.profile_data.sidebar_about 
+    }});
 
-  const profile = {
-    name: props.profile_data.name,
-    handle: props.profile_data.handle,
-    bio: props.profile_data.bio,
-    followers: "120K",
-    avgEngagement: "4.2%",
-    platforms,
-    sidebar_about: props.profile_data.sidebar_about
-  };
 
+ 
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -81,7 +86,7 @@ export default function InfluencerProfilePage(props) {
               <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-indigo-400 shadow-lg">
                 <Image
                   src={preview || avatar}
-                  alt={profile.name}
+                  alt={profileData.name}
                   fill
                   sizes="(max-width: 768px) 128px, 144px"
                   style={{ objectFit: "cover" }}
@@ -97,7 +102,9 @@ export default function InfluencerProfilePage(props) {
                 {props.userRole === "influencer" && (
                   <button
                     className="px-4 py-1 bg-gradient-to-r from-indigo-500 to-pink-500 text-white rounded-lg text-xs font-semibold shadow hover:from-indigo-600 hover:to-pink-600 transition"
-                    onClick={() => setEditing(true)}
+                    onClick={() => {
+                      setIsEditing((s)=>(!s))
+                    }}
                   >
                     Edit Profile
                   </button>
@@ -152,10 +159,22 @@ export default function InfluencerProfilePage(props) {
             <div className="flex-1">
               <div className="flex items-start justify-between">
                 <div>
-                  <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 drop-shadow-sm">
-                    {profile.name}
-                  </h1>
-                  <p className="text-base text-indigo-500 font-medium">{profile.handle}</p>
+                  {isEditing ? (
+                    <input 
+                      type="text" 
+                      value={profileData.name} 
+                      className="text-3xl md:text-4xl font-extrabold text-gray-900 drop-shadow-sm bg-white border border-gray-300 rounded px-2 py-1"
+                      onChange={(e) => {
+                        // You can add state management here when needed
+                      }}
+                    />
+                  ) : (
+                    <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 drop-shadow-sm">
+                      {profileData.name}
+                    </h1>
+                    
+                  )}
+                  <p className="text-base text-indigo-500 font-medium">{profileData.handle}</p>
                 </div>
                 <div className="hidden md:flex items-center space-x-3">
                   <button
@@ -172,20 +191,20 @@ export default function InfluencerProfilePage(props) {
                   </button>
                 </div>
               </div>
-              <p className="mt-4 text-gray-700 text-lg italic">{profile.bio}</p>
+              <p className="mt-4 text-gray-700 text-lg italic">{profileData.bio}</p>
               <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:gap-8 gap-3">
                   <div className="flex items-center gap-8">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-gray-900">{profile.followers}</div>
+                      <div className="text-2xl font-bold text-gray-900">{profileData.followers}</div>
                       <div className="text-xs text-gray-500">Followers</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-gray-900">{profile.avgEngagement}</div>
+                      <div className="text-2xl font-bold text-gray-900">{profileData.avgEngagement}</div>
                       <div className="text-xs text-gray-500">Avg engagement</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    {profile.platforms.map((p) => (
+                    {profileData.platforms.map((p) => (
                       <a
                         key={p.name}
                         href={p.url}
@@ -264,8 +283,7 @@ export default function InfluencerProfilePage(props) {
             <div>
               <h3 className="text-lg font-bold text-indigo-700">About</h3>
               <p className="mt-2 text-gray-700 text-base">
-                {profile.sidebar_about} 
-                {console.log({profile})}
+                {profileData.sidebar_about} 
               </p>
             </div>
             <div className="border-t pt-4">
