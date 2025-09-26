@@ -23,6 +23,13 @@ export default async function page() {
   const influencer_servises = await getAllInfluencerServises(payload.influencer_id);
   console.log({currencies, influencer_servises });
   return (
-    <InfluencerProfilePage influencer_servises={influencer_servises.data} currencies={currencies.data} userId={payload.userId} userRole={payload.userRole} influencer_id={payload.influencer_id} profile_data={profile_info.success ? profile_info.data[0] : null}/>
+    <InfluencerProfilePage 
+      influencer_servises={influencer_servises.data} 
+      currencies={currencies.data} 
+      userId={payload.userId} 
+      userRole={payload.userRole} 
+      influencer_id={payload.influencer_id} 
+      profile_data={profile_info.success ? profile_info.data[0] : null}
+    />
   );
 }

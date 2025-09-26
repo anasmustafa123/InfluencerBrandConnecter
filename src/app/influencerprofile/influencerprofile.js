@@ -8,14 +8,18 @@ import { userAgent } from "next/server";
 import { useState } from "react";
 import {NewServise} from "./NewServise";
 import {ServiseWidget} from "./ServiseWidget";
+import DraggableComponent from "@/components/draggablecomponent";
+import { IoHomeOutline } from "react-icons/io5";
+import { FaArrowLeft } from "react-icons/fa6";
+import { FaEdit } from "react-icons/fa";
+import SocialLinksSelector from "./influencerselector";
+
 
 export default function InfluencerProfilePage(props) {
 
   const handleDeleteService = (id) => {
     setServices(prev => prev.filter(s => s.id !== id));
   };
-
-  
 
   const router = useRouter();
   const [avatar, setAvatar] = useState("/profile-pic.png"); 
@@ -26,11 +30,13 @@ export default function InfluencerProfilePage(props) {
   const [newService, setNewService] = useState({ title: "", icon: "", delivery_from: 2, delivery_to: 7, descNumber: 1, descType: "", price: 0, currency: {icon:"$", abbreviation: "USD", name: "dollar"},influencer_servise_line: []});
   const [influencer_servises, set_infeluencer_servises] = useState(props.influencer_servises);
   const [isEditing, setIsEditing] = useState(false);
+  
+  const [platformWidgetState, setPlatformWidgetState] = useState(false);
   const [profileData, setProfileData] = useState(() => {
-  let platforms =  props && props.profile_data && props.profile_data.influencers && props.profile_data.influencers.influencer_platforms ? props.profile_data.influencers.influencer_platforms : []
-  platforms = platforms.map((platform) => {
-    return {name: platform.platforms.display_name, url: platform.url, badge: platform.platforms.icon}
-  });
+    let platforms =  props && props.profile_data && props.profile_data.influencers && props.profile_data.influencers.influencer_platforms ? props.profile_data.influencers.influencer_platforms : []
+    platforms = platforms.map((platform) => {
+      return {name: platform.platforms.display_name, url: platform.url, badge: platform.platforms.icon}
+    });
     return { 
       name: props.profile_data.name,
       handle: props.profile_data.handle,
@@ -39,9 +45,9 @@ export default function InfluencerProfilePage(props) {
       avgEngagement: "4.2%",
       platforms,
       sidebar_about: props.profile_data.sidebar_about 
-    }});
+  }});
 
-
+  const platforms = ['facebook', 'adssa', 'ggg']
  
 
   const handleFileChange = (e) => {
@@ -61,22 +67,32 @@ export default function InfluencerProfilePage(props) {
  
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 py-10 px-4 flex flex-col items-center">
-      <div className="mb-8 flex justify-start w-full max-w-5xl">
-        <a
-          href="/home"
-          className="inline-flex items-center p-2 rounded-full bg-white/70 border border-gray-200 hover:bg-white/90 shadow-lg backdrop-blur-md transition"
-          aria-label="Go to Home"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6 text-indigo-600"
+      <div className="flex w-full justify-between max-w-5xl">
+        <div className="mb-4 flex gap-2 justify-start w-fit">
+          <a
+            href="#"
+            className="text-center text-2xl text-blue-800 items-center p-2 rounded-full bg-white/70 border border-gray-200 hover:bg-white/90 shadow-lg backdrop-blur-md transition"
+            aria-label="Go to Home"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l9-9 9 9M4.5 10.5V21h15v-10.5" />
-          </svg>
+            <FaArrowLeft />
+          </a>
+          <a
+            href="/home"
+            className="inline-flex text-2xl text-blue-800 items-center p-2 rounded-full bg-white/70 border border-gray-200 hover:bg-white/90 shadow-lg backdrop-blur-md transition"
+            aria-label="Go to Home"
+          >
+            <IoHomeOutline />
+          </a>
+        </div>
+        <a
+            href="#"
+            className={`mb-4 ${props.userRole === "influencer" ? "inline-flex" : "hidden"} text-2xl text-blue-800 items-center p-2 rounded-full bg-white/70 border border-gray-200 hover:bg-white/90 shadow-lg backdrop-blur-md transition`}
+            aria-label="Go to Home"
+            onClick={() => {
+              setIsEditing((s)=>(!s))
+            }}
+          >
+            <FaEdit />
         </a>
       </div>
       <div className="mx-auto w-full max-w-5xl">
@@ -99,7 +115,7 @@ export default function InfluencerProfilePage(props) {
                 </label>
                 </div>
                 <div>
-                {props.userRole === "influencer" && (
+                {/* {props.userRole === "influencer" && (
                   <button
                     className="px-4 py-1 bg-gradient-to-r from-indigo-500 to-pink-500 text-white rounded-lg text-xs font-semibold shadow hover:from-indigo-600 hover:to-pink-600 transition"
                     onClick={() => {
@@ -108,7 +124,7 @@ export default function InfluencerProfilePage(props) {
                   >
                     Edit Profile
                   </button>
-                )}
+                )} */}
               </div>
             </div>
             {showConfirm && selectedFile && (
@@ -174,7 +190,19 @@ export default function InfluencerProfilePage(props) {
                     </h1>
                     
                   )}
-                  <p className="text-base text-indigo-500 font-medium">{profileData.handle}</p>
+                  {isEditing ? (
+                    <input 
+                      type="text" 
+                      value={profileData.handle} 
+                      className="text-3xl md:text-4xl font-extrabold text-gray-900 drop-shadow-sm bg-white border border-gray-300 rounded px-2 py-1"
+                      onChange={(e) => {
+                        // You can add state management here when needed
+                      }}
+                    />
+                  ) : (
+                    <p className="text-base text-indigo-500 font-medium">{profileData.handle}</p>
+                  )}
+                  
                 </div>
                 <div className="hidden md:flex items-center space-x-3">
                   <button
@@ -191,7 +219,19 @@ export default function InfluencerProfilePage(props) {
                   </button>
                 </div>
               </div>
-              <p className="mt-4 text-gray-700 text-lg italic">{profileData.bio}</p>
+              {isEditing ? (
+                <input 
+                  type="text" 
+                  value={profileData.bio} 
+                  className="text-3xl md:text-4xl font-extrabold text-gray-900 drop-shadow-sm bg-white border border-gray-300 rounded px-2 py-1"
+                  onChange={(e) => {
+                    // You can add state management here when needed
+                  }}
+                />
+              ) : (
+                <p className="mt-4 text-gray-700 text-lg italic">{profileData.bio}</p>
+              )}
+              
               <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:gap-8 gap-3">
                   <div className="flex items-center gap-8">
                     <div className="text-center">
@@ -204,7 +244,23 @@ export default function InfluencerProfilePage(props) {
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    {profileData.platforms.map((p) => (
+                    {isEditing ? (
+                      <>
+                      <button 
+                        className="px-5 py-2 border border-indigo-300 rounded-lg text-sm font-medium bg-white/70 hover:bg-indigo-50 shadow"
+                        onClick={() => {
+                          setPlatformWidgetState((s)=> !s)
+                        }} 
+                      >
+                        Edit Platforms
+                      </button>
+                      <DraggableComponent 
+                        children={<SocialLinksSelector influencer_id={props.influencer_id} />}
+                        state={platformWidgetState}
+                        setState={setPlatformWidgetState}
+                      />
+                      </>
+                    ) : profileData.platforms.map((p) => (
                       <a
                         key={p.name}
                         href={p.url}
@@ -226,6 +282,7 @@ export default function InfluencerProfilePage(props) {
                         <span className="hidden sm:inline">{p.name}</span>
                       </a>
                     ))}
+                    {/* {} */}
                   </div>
                 </div>
                 <div className="mt-6 md:hidden flex items-center gap-3">
