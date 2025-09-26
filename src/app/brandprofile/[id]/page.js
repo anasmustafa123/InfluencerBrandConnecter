@@ -4,8 +4,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import jwt from "jsonwebtoken";
 
-
-export default async function page() {
+export default async function page(params) {
+  const { id } = await params;
   const cookieStore = await cookies();
   const isUser = cookieStore.get('token') 
   let payload = {}
@@ -16,11 +16,12 @@ export default async function page() {
   } catch (err) {
     console.log(err);
     return (<></>)
+  }
+  const brand_info = await getBrandProfile(parseInt(id));
+  console.log({brand_info});
+  if (! brand_info.success) {
     redirect("/home");
   }
-  const brand_info = await getBrandProfile(payload.brand_id);
-  console.log({"payload.brand_id": payload.brand_id});
-  console.log({brand_info});
   return (
     <BrandProfilePage 
       userId={payload.userId} 

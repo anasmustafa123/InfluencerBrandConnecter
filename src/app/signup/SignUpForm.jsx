@@ -74,20 +74,20 @@ const onSubmit = async (data) => {
         const user_type = user_data.data[0].user_type
         if (res_data.success) {
             if (user_type === "brand") {
-                router.push("/brandprofile");
+                router.push("/brandsetup");
             }else if (user_type === "influencer") {
-                router.push("/influencerprofile");
+                router.push("/influencersetup");
             }
         }
         if (! res_data.success) {
             alert(res_data.message);
         }
-        console.log({res_data}); 
-        if (role === "brand") {
-          router.push("/brandsetup");
-        } else if (role === "influencer") {
-          router.push("/influencersetup");
-        }
+        // console.log({res_data}); 
+        // if (role === "brand") {
+        //   router.push("/brandsetup");
+        // } else if (role === "influencer") {
+        //   router.push("/influencersetup");
+        // }
     } catch (error) {
         alert(error.message)
     }

@@ -20,7 +20,7 @@ export default async function page({params}) {
     return (<></>)
   }
   
-  const profile_info = await getInfProfile(id);
+  const profile_info = await getInfProfile(parseInt(id));
   if (! profile_info.success) {
     redirect("/home");
   }
@@ -31,7 +31,7 @@ export default async function page({params}) {
     <InfluencerProfilePage 
       userId={payload.userId} 
       userRole={payload.userRole} 
-      influencer_id={payload.influencer_id} 
+      influencer_id={parseInt(id)} 
       profile_data={profile_info.success ? profile_info.data[0] : null}
       currencies={currencies.data} 
       influencer_servises={influencer_servises.data} 

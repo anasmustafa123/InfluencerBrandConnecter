@@ -11,8 +11,7 @@ import {ServiseWidget} from "./ServiseWidget";
 import DraggableComponent from "@/components/draggablecomponent";
 import { IoHomeOutline } from "react-icons/io5";
 import { FaArrowLeft } from "react-icons/fa6";
-import { FaEdit } from "react-icons/fa";
-import { FaSave } from "react-icons/fa";
+import { FaSave, FaEdit } from "react-icons/fa";
 import SocialLinksSelector from "./influencerselector";
 
 export default function InfluencerProfilePage(props) {
