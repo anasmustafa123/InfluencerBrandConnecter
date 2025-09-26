@@ -25,7 +25,7 @@ export default async function page({params}) {
     redirect("/home");
   }
   const currencies = await getCurrencies();
-  const influencer_servises = await getAllInfluencerServises(payload.influencer_id);
+  const influencer_servises = await getAllInfluencerServises(parseInt(id));
   
   return (
     <InfluencerProfilePage 
