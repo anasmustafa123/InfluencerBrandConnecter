@@ -15,10 +15,10 @@ export async function uploadAvatar(userId, file, path_name) {
   }
 
   // Get public URL
-  const { publicUrl } = supabase
+  const res = supabase
     .storage
     .from('avatars')
     .getPublicUrl(filePath);
 
-  return publicUrl;
+  return res.data.publicUrl;
 }

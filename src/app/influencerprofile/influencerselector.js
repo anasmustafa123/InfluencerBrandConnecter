@@ -19,13 +19,13 @@ const SocialLinksSelector = ({ influencer_id }) => {
       async function get_data () {
         const all_platforms = await getAllPlatforms(false);
         const allInfluencerPlatforms = await getAllInfluencerPlatforms(influencer_id);
-        console.log({all_platforms})
-        console.log({allInfluencerPlatforms})
+        // console.log({all_platforms})
+        // console.log({allInfluencerPlatforms})
         setAllPlatforms(all_platforms);
         setInfluencerPlatforms(all_platforms);
         
         if (allInfluencerPlatforms.success){
-          setInfluencerPlatforms(allInfluencerPlatforms.data.map((pl) => ({...pl, edit_mode: true})));
+          setInfluencerPlatforms(allInfluencerPlatforms.data.map((pl) => ({...pl, edit_mode: false})));
         }
       }
       get_data();
@@ -58,7 +58,7 @@ const SocialLinksSelector = ({ influencer_id }) => {
     {
       influencer_platforms.map((inf_platform, index) => (
         <div className="flex justify-between items-center gap-2 mb-2">
-          {inf_platform.edit_mode ?
+          {!inf_platform.edit_mode ?
           (
             <>
               <div
@@ -116,13 +116,17 @@ const SocialLinksSelector = ({ influencer_id }) => {
       <IoAddCircle className="text-xl cursor-pointer" 
       onClick={async()=>{
         if (selectedNewPlatform){
-          const res = await AddInfluencerPlatforms(influencer_id, selectedNewPlatform.name, selectedNewPlatform.url);
+          const res = await AddInfluencerPlatforms(influencer_id, selectedNewPlatform.name, selectedNewPlatform.url, selectedNewPlatform.url);
           console.log([res])
           if (res.success){
             const prev_inf_platforms = [...influencer_platforms];
-            prev_inf_platforms.push({platform_id: selectedNewPlatform.name, url: selectedNewPlatform.url, edit_mode: true});
+            prev_inf_platforms.push({platform_id: selectedNewPlatform.name, url: selectedNewPlatform.url, edit_mode: false});
             setInfluencerPlatforms(prev_inf_platforms);
+          }else {
+            alert(res.message)
           }
+        }else {
+          alert("Please select a platform")
         }
       }}
       />

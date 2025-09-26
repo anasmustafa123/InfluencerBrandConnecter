@@ -1,7 +1,7 @@
 "use client";
 
 import { uploadAvatar } from "@/lib/avatars";
-import { getInfProfile, updateProfileAvatar } from "@/lib/profils/inf_profile";
+import { getInfProfile, updateProfileData } from "@/lib/profils/inf_profile";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { userAgent } from "next/server";
@@ -12,17 +12,18 @@ import DraggableComponent from "@/components/draggablecomponent";
 import { IoHomeOutline } from "react-icons/io5";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
+import { FaSave } from "react-icons/fa";
 import SocialLinksSelector from "./influencerselector";
-
 
 export default function InfluencerProfilePage(props) {
 
+  console.log({props: props.profile_data.avatar_url})
   const handleDeleteService = (id) => {
     setServices(prev => prev.filter(s => s.id !== id));
   };
 
   const router = useRouter();
-  const [avatar, setAvatar] = useState("/profile-pic.png"); 
+  const [avatar, setAvatar] = useState(props.profile_data && props.profile_data.avatar_url ? props.profile_data.avatar_url : ""); 
   const [preview, setPreview] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -30,7 +31,7 @@ export default function InfluencerProfilePage(props) {
   const [newService, setNewService] = useState({ title: "", icon: "", delivery_from: 2, delivery_to: 7, descNumber: 1, descType: "", price: 0, currency: {icon:"$", abbreviation: "USD", name: "dollar"},influencer_servise_line: []});
   const [influencer_servises, set_infeluencer_servises] = useState(props.influencer_servises);
   const [isEditing, setIsEditing] = useState(false);
-  
+  const [hasChanges, setHasChanges] = useState(false);
   const [platformWidgetState, setPlatformWidgetState] = useState(false);
   const [profileData, setProfileData] = useState(() => {
     let platforms =  props && props.profile_data && props.profile_data.influencers && props.profile_data.influencers.influencer_platforms ? props.profile_data.influencers.influencer_platforms : []
@@ -69,13 +70,13 @@ export default function InfluencerProfilePage(props) {
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 py-10 px-4 flex flex-col items-center">
       <div className="flex w-full justify-between max-w-5xl">
         <div className="mb-4 flex gap-2 justify-start w-fit">
-          <a
-            href="#"
+          <button
+            onClick={() => router.back()}
             className="text-center text-2xl text-blue-800 items-center p-2 rounded-full bg-white/70 border border-gray-200 hover:bg-white/90 shadow-lg backdrop-blur-md transition"
-            aria-label="Go to Home"
+            aria-label="Go to Previous Page"
           >
             <FaArrowLeft />
-          </a>
+          </button>
           <a
             href="/home"
             className="inline-flex text-2xl text-blue-800 items-center p-2 rounded-full bg-white/70 border border-gray-200 hover:bg-white/90 shadow-lg backdrop-blur-md transition"
@@ -84,16 +85,37 @@ export default function InfluencerProfilePage(props) {
             <IoHomeOutline />
           </a>
         </div>
-        <a
-            href="#"
-            className={`mb-4 ${props.userRole === "influencer" ? "inline-flex" : "hidden"} text-2xl text-blue-800 items-center p-2 rounded-full bg-white/70 border border-gray-200 hover:bg-white/90 shadow-lg backdrop-blur-md transition`}
-            aria-label="Go to Home"
-            onClick={() => {
-              setIsEditing((s)=>(!s))
-            }}
-          >
-            <FaEdit />
-        </a>
+        <div className="flex gap-2 justify-start w-fit">
+          <a
+              href="#"
+              className={`mb-4 ${props.userRole === "influencer" && props.isUsersProfile && hasChanges ? "inline-flex" : "hidden"} text-2xl text-blue-800 items-center p-2 rounded-full bg-white/70 border border-gray-200 hover:bg-white/90 shadow-lg backdrop-blur-md transition`}
+              aria-label="save changes"
+              onClick={async() => {
+                console.log({profileData, avatar})
+                const res = await updateProfileData(props.influencer_id, profileData.name, profileData.bio, profileData.handle, profileData.sidebar_about, avatar);
+                console.log({res})
+                if (!res.success) {
+                  alert(res.message);
+                  return;
+                }
+                setHasChanges(false);
+                setIsEditing(false);
+              }}
+            >
+              <FaSave />
+          </a>
+          <a
+              href="#"
+              className={`mb-4 ${props.userRole === "influencer" && props.isUsersProfile ? "inline-flex" : "hidden"} text-2xl text-blue-800 items-center p-2 rounded-full bg-white/70 border border-gray-200 hover:bg-white/90 shadow-lg backdrop-blur-md transition`}
+              aria-label="edit profile"
+              onClick={() => {
+                setIsEditing((s)=>(!s))
+              }}
+            >
+              <FaEdit />
+          </a>
+        </div>
+
       </div>
       <div className="mx-auto w-full max-w-5xl">
         <div className="bg-white/60 backdrop-blur-lg rounded-3xl shadow-xl p-6 md:p-10 border border-white/40">
@@ -108,23 +130,18 @@ export default function InfluencerProfilePage(props) {
                   style={{ objectFit: "cover" }}
                 />
               </div>
-              <div className="mt-3 flex items-center gap-3">
-                <label className="cursor-pointer text-sm text-indigo-600 font-medium hover:underline">
-                  Change Photo
-                  <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
-                </label>
-                </div>
+              {
+                props.userRole === "influencer" && props.isUsersProfile && (
+                  <div className=" mt-3 flex items-center gap-3">
+                    <label className="cursor-pointer text-sm text-indigo-600 font-medium hover:underline">
+                      Change Photo
+                      <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+                    </label>
+                  </div>
+                )
+              }
+              
                 <div>
-                {/* {props.userRole === "influencer" && (
-                  <button
-                    className="px-4 py-1 bg-gradient-to-r from-indigo-500 to-pink-500 text-white rounded-lg text-xs font-semibold shadow hover:from-indigo-600 hover:to-pink-600 transition"
-                    onClick={() => {
-                      setIsEditing((s)=>(!s))
-                    }}
-                  >
-                    Edit Profile
-                  </button>
-                )} */}
               </div>
             </div>
             {showConfirm && selectedFile && (
@@ -146,7 +163,9 @@ export default function InfluencerProfilePage(props) {
                         // TODO: upload to Supabase here
                         try {
                           const url = await uploadAvatar(props.userId, selectedFile, "profile/influencer");
-                          await updateProfileAvatar(props.userId, url);
+                          console.log({url});
+                          setHasChanges(true);
+                          // await updateProfileAvatar(props.userId, url);
                           setAvatar(url); // update main avatar
                           setShowConfirm(false); // close modal
                         } catch (err) {
@@ -179,10 +198,12 @@ export default function InfluencerProfilePage(props) {
                     <input 
                       type="text" 
                       value={profileData.name} 
-                      className="text-3xl md:text-4xl font-extrabold text-gray-900 drop-shadow-sm bg-white border border-gray-300 rounded px-2 py-1"
+                      className="text-3xl md:text-4xl font-extrabold text-gray-900 drop-shadow-sm bg-white/80 backdrop-blur-md border-2 border-indigo-200 hover:border-indigo-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl px-4 py-2 transition-all duration-200 shadow-lg"
                       onChange={(e) => {
-                        // You can add state management here when needed
+                        setHasChanges(true);
+                        setProfileData((prev) => ({...prev, name: e.target.value}));
                       }}
+                      placeholder="Enter your name"
                     />
                   ) : (
                     <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 drop-shadow-sm">
@@ -194,10 +215,12 @@ export default function InfluencerProfilePage(props) {
                     <input 
                       type="text" 
                       value={profileData.handle} 
-                      className="text-3xl md:text-4xl font-extrabold text-gray-900 drop-shadow-sm bg-white border border-gray-300 rounded px-2 py-1"
+                      className="text-base text-indigo-600 font-semibold bg-white/80 backdrop-blur-md border-2 border-indigo-200 hover:border-indigo-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-lg px-3 py-1 mt-1 transition-all duration-200 shadow-md"
                       onChange={(e) => {
-                        // You can add state management here when needed
+                        setProfileData((prev) => ({...prev, handle: e.target.value}));
+                        setHasChanges(true);
                       }}
+                      placeholder="Enter your handle"
                     />
                   ) : (
                     <p className="text-base text-indigo-500 font-medium">{profileData.handle}</p>
@@ -220,13 +243,15 @@ export default function InfluencerProfilePage(props) {
                 </div>
               </div>
               {isEditing ? (
-                <input 
-                  type="text" 
+                <textarea 
                   value={profileData.bio} 
-                  className="text-3xl md:text-4xl font-extrabold text-gray-900 drop-shadow-sm bg-white border border-gray-300 rounded px-2 py-1"
+                  className="mt-4 w-full text-gray-700 text-lg italic bg-white/80 backdrop-blur-md border-2 border-indigo-200 hover:border-indigo-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl px-4 py-3 transition-all duration-200 shadow-lg resize-none"
                   onChange={(e) => {
-                    // You can add state management here when needed
+                    setProfileData((prev) => ({...prev, bio: e.target.value}));
+                    setHasChanges(true);
                   }}
+                  placeholder="Enter your bio"
+                  rows="2"
                 />
               ) : (
                 <p className="mt-4 text-gray-700 text-lg italic">{profileData.bio}</p>
@@ -246,7 +271,7 @@ export default function InfluencerProfilePage(props) {
                   <div className="flex items-center gap-3">
                     {isEditing ? (
                       <>
-                      <button 
+                      {/* <button 
                         className="px-5 py-2 border border-indigo-300 rounded-lg text-sm font-medium bg-white/70 hover:bg-indigo-50 shadow"
                         onClick={() => {
                           setPlatformWidgetState((s)=> !s)
@@ -258,7 +283,7 @@ export default function InfluencerProfilePage(props) {
                         children={<SocialLinksSelector influencer_id={props.influencer_id} />}
                         state={platformWidgetState}
                         setState={setPlatformWidgetState}
-                      />
+                      /> */}
                       </>
                     ) : profileData.platforms.map((p) => (
                       <a
@@ -308,7 +333,7 @@ export default function InfluencerProfilePage(props) {
               <h2 className="text-2xl font-bold text-indigo-700 tracking-tight">Services Offered</h2>
               <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-500 font-medium">Prices & delivery</span>
-                {props.userRole === "influencer" && (
+                {props.userRole === "influencer" && props.isUsersProfile && (
                   <button
                     className="p-1 rounded-full bg-indigo-100 hover:bg-indigo-200 text-indigo-600 shadow"
                     onClick={() => setShowAddService(true)}
@@ -339,9 +364,24 @@ export default function InfluencerProfilePage(props) {
           <aside className="bg-white/70 backdrop-blur-lg rounded-2xl border border-indigo-100 p-6 shadow-lg flex flex-col gap-6">
             <div>
               <h3 className="text-lg font-bold text-indigo-700">About</h3>
-              <p className="mt-2 text-gray-700 text-base">
-                {profileData.sidebar_about} 
-              </p>
+              {
+                isEditing ? (
+                  <textarea 
+                    value={profileData.sidebar_about}
+                    onChange={(e) => {
+                      setHasChanges(true);
+                      setProfileData((prev) => ({...prev, sidebar_about: e.target.value}));
+                    }}  
+                    className="w-full mt-2 p-3 text-gray-700 text-base bg-white/90 backdrop-blur-md border-2 border-indigo-200 hover:border-indigo-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl transition-all duration-200 shadow-md resize-none"
+                    placeholder="Tell people about yourself..."
+                    rows="4"
+                  />
+                ) : 
+                <p className="mt-2 text-gray-700 text-base">
+                  {profileData.sidebar_about} 
+                </p>
+              }
+              
             </div>
             <div className="border-t pt-4">
               <h4 className="text-base font-semibold text-indigo-600">Top stats</h4>

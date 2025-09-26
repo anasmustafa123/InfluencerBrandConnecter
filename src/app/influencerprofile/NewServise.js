@@ -5,7 +5,7 @@ import { useState } from "react";
 
 
 const get_currency_id = (currencies, currency_name) => {
-    console.log({currencies, currency_name})
+    // console.log({currencies, currency_name})
     const currency = currencies.find(currency => currency.name === currency_name);
     return currency ? currency.id : null;
 }
@@ -18,7 +18,7 @@ const get_currency_details = (currencies, currency_name) => {
 const add_service_to_db = async (newService, influencer_id, currencies) => {
     const currency_id = get_currency_id(currencies, newService.currency.name);
     const res = await addNewInfluencerServise(influencer_id, newService.title, currency_id, newService.price, newService.delivery_from, newService.delivery_to, newService.icon);
-    console.log("the newservice", newService)
+    // console.log("the newservice", newService)
     return res;
 }
 
@@ -31,15 +31,15 @@ export function NewServise({setNewService, newService, setShowAddService, curren
                 console.log("submitting", newService);
                 const res_ofadd = await add_service_to_db(newService, influencer_id, currencies);
                 if (! res_ofadd.success) {
-                    console.log(res_ofadd.message)
+                    // console.log(res_ofadd.message)
                     alert(res_ofadd.message);
                     return;
                 }
                 const linesadded = await addNewInfluencerServiseLines(newService.influencer_servise_line.map((s)=> ({ influencer_service_id: res_ofadd.data.id, name: s.name, count: s.count })));
                 setShowAddService(false);
-                console.log({linesadded})
+                // console.log({linesadded})
                 if (! linesadded.success) {
-                    console.log(linesadded.message)
+                    // console.log(linesadded.message)
                     alert('Something went wrong');
                     return;
                 }
@@ -73,9 +73,8 @@ export function NewServise({setNewService, newService, setShowAddService, curren
                     Delivery Min
                     <input
                         type="number"
-                        min={1}
-                        max={30}
-                        value={newService.delivery_from || 2}
+                        placeholder="Enter min delivery days"
+                        value={newService.delivery_from}
                         onChange={e => setNewService(s => ({ ...s, delivery_from: Number(e.target.value) }))}
                         className="border rounded px-2 py-1"
                         required
@@ -84,10 +83,9 @@ export function NewServise({setNewService, newService, setShowAddService, curren
                     <label className="flex flex-col text-sm">
                     Delivery Max
                     <input
-                        type="number"
-                        min={1}
-                        max={30}
-                        value={newService.delivery_to || 7}
+                        type="number"           
+                        value={newService.delivery_to}
+                        placeholder="Enter max delivery days"
                         onChange={e => setNewService(s => ({ ...s, delivery_to: Number(e.target.value) }))}
                         className="border rounded px-2 py-1"
                         required
@@ -199,7 +197,10 @@ export function NewServise({setNewService, newService, setShowAddService, curren
                 </div>
                 <div className="flex gap-3 mt-2">
                 <button type="submit" className="px-4 py-2 bg-indigo-500 text-white rounded-lg font-semibold hover:bg-indigo-600">Add</button>
-                <button type="button" className="px-4 py-2 border rounded-lg font-medium hover:bg-gray-100" onClick={() => setShowAddService(false)}>Cancel</button>
+                <button type="button" className="px-4 py-2 border rounded-lg font-medium hover:bg-gray-100" onClick={() =>{
+                    setShowAddService(false);
+                    
+                }}>Cancel</button>
                 </div>
             </form>
         </div>

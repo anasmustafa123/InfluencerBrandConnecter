@@ -3,7 +3,7 @@
 
 function get_service_content(content_array){
     const content_str = content_array.reduce((accumulator, service_line) => {
-        return accumulator + ` + ${service_line.count} ${service_line.name}`
+        return accumulator + ` ${accumulator ? "+" : ""} ${service_line.count} ${service_line.name}`
     }, "")
     return (<p className="mt-2 text-sm text-gray-600">{content_str}</p>)
 }
@@ -11,7 +11,7 @@ function get_service_content(content_array){
 export function ServiseWidget({service}) {
     return (
         <div key={service.id} className="relative bg-white/70 backdrop-blur-lg rounded-2xl border border-indigo-100 p-6 shadow-lg hover:shadow-xl transition flex flex-col">
-            <button
+            {/* <button
                 className="absolute top-2 right-2 w-5 h-5 flex items-center justify-center rounded-full text-pink-400 text-base font-bold transition-colors duration-150 hover:bg-pink-100 hover:text-pink-600 focus:outline-none"
                 onClick={
                     // () => handleDeleteService(service.id)
@@ -21,7 +21,7 @@ export function ServiseWidget({service}) {
                 style={{ boxShadow: 'none', border: 'none', background: 'none' }}
             >
             ×
-            </button>   
+            </button>    */}
             <div className="flex items-start gap-4">
             <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-indigo-100 to-pink-100 flex items-center justify-center text-3xl shadow">
                 <span>{service.icon}</span>

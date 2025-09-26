@@ -21,7 +21,7 @@ export default async function page() {
   const profile_info = await getInfProfile(payload.influencer_id);
   const currencies = await getCurrencies();
   const influencer_servises = await getAllInfluencerServises(payload.influencer_id);
-  console.log({currencies, influencer_servises });
+  console.log({currencies, profile_info: profile_info.data[0] });
   return (
     <InfluencerProfilePage 
       influencer_servises={influencer_servises.data} 
@@ -30,6 +30,7 @@ export default async function page() {
       userRole={payload.userRole} 
       influencer_id={payload.influencer_id} 
       profile_data={profile_info.success ? profile_info.data[0] : null}
+      isUsersProfile={true}
     />
   );
 }

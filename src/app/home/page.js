@@ -9,7 +9,7 @@ export default async function Page() {
   
   let payload = {}
   try {
-    console.log({isUser})
+    // console.log({isUser})
     if (isUser){
       payload = jwt.verify(isUser.value, process.env.NEXT_PUBLIC_JWT_SECRET)
     }

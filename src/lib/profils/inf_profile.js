@@ -24,13 +24,12 @@ export async function getInfProfile (influencer_id) {
 }
 
 
-export async function updateProfileAvatar(userId, avatarUrl) {
+export async function updateProfileData(influencer_id, name,  bio, handle, sidebar_about, avatar_url) {
     const { data, error } = await supabase
       .from('influencer_profile')
-      .update({ avatar_url: avatarUrl })
-      .eq('id', userId);
+      .update({ name, bio, handle, sidebar_about, avatar_url })
+      .eq('influencer_id', influencer_id);
   
-    if (error) throw error;
-    return data;
+    return {data: data, success: error ? false : true, message: error ? error.message : "Profile updated successfully"}
   }
   
